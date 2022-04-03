@@ -8,5 +8,4 @@ class Square(Rectangle):
         if a > 0:
             self.a = self.b = a
         else:
-            raise ValueError("Some of triangle parameters are invalid")
-
+            raise ValueError("Square sides must be greater than 0.")

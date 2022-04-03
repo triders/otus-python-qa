@@ -21,10 +21,3 @@ class Triangle(Figure):
     def get_area(self):
         s = self.get_perimeter / 2
         return math.sqrt((s * (s - self.a) * (s - self.b) * (s - self.c)))
-
-
-if __name__ == "__main__":
-    print(Triangle(1, 1, 1).get_perimeter)
-    print(Triangle(3, 4, 5).get_perimeter)
-    print(Triangle(4.5, 5.111111111, 6.9090901909101).get_perimeter)
-    print(Triangle(1, 1000, 1000).get_perimeter)

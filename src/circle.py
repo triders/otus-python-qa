@@ -9,7 +9,7 @@ class Circle(Figure):
         if r > 0:
             self.r = r
         else:
-            raise ValueError("Some of triangle parameters are invalid")
+            raise ValueError("Circle must have a radius greater than 0")
 
     @property
     def get_perimeter(self):
