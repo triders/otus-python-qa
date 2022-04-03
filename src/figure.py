@@ -2,11 +2,11 @@ class Figure:
 
     @property
     def get_perimeter(self):
-        return False
+        return None
 
     @property
     def get_area(self):
-        return False
+        return None
 
     def add_area(self, figure):
         if isinstance(figure, Figure):

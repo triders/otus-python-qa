@@ -1,5 +1,8 @@
 import pytest
+from src.triangle import Triangle
 from src.rectangle import Rectangle
+from src.square import Square
+from src.circle import Circle
 
 
 def test_rectangle_name():
@@ -20,6 +23,17 @@ def test_rectangle_perimeter_calculated_correctly():
 
 def test_rectangles_area_sum_calculated_correctly():
     assert Rectangle(1, 1).add_area(Rectangle(3, 4)) == 13
+
+
+def test_rectangle_and_other_figures_sum_calculated_correctly():
+    assert Rectangle(3, 4).add_area(Square(2)) == 16
+    assert Rectangle(3, 4).add_area(Circle(3)) == 12 + 28.274333882308138
+    assert Rectangle(3, 4).add_area(Triangle(3, 4, 5)) == 18
+
+
+@pytest.mark.xfail
+def test_cannot_add_area_of_not_figure_object():
+    assert Rectangle(3, 4).add_area(1)
 
 
 @pytest.mark.xfail
