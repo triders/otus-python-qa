@@ -1,5 +1,7 @@
 import pytest
 import requests
+import cerberus
+
 
 BASE_URL = "https://dog.ceo/api"
 
@@ -22,13 +24,23 @@ def get_breeds():
 def get_breeds_which_have_sub_breeds():
     r = requests.get(ENDPOINTS["list all breeds"]).json()
     breeds = r["message"]
-    print(breeds)
     while breeds:
         breed = breeds.popitem()
         if breed[1]:
             yield breed
 
 
+@pytest.mark.smoke
+def test_dog_api_json_schema():
+    response_json = requests.get(ENDPOINTS["list all breeds"]).json()
+    schema = {
+        "message": {"type": "dict"},
+        "status": {"type": "string"},
+    }
+    assert cerberus.Validator().validate(response_json, schema)
+
+
+@pytest.mark.smoke
 @pytest.mark.parametrize("breed", get_breeds())
 def test_random_picture_pick_works_for_all_breeds(breed):
     """RANDOM IMAGE FROM A BREED COLLECTION
@@ -42,6 +54,7 @@ def test_random_picture_pick_works_for_all_breeds(breed):
     assert breeds["status"] == "success"
 
 
+@pytest.mark.regression
 @pytest.mark.parametrize("breed, sub_breed_list", get_breeds_which_have_sub_breeds())
 def test_random_picture_pick_works_for_all_sub_breeds_of_breed(breed, sub_breed_list):
     """SINGLE RANDOM IMAGE FROM A SUB BREED COLLECTION
@@ -52,6 +65,7 @@ def test_random_picture_pick_works_for_all_sub_breeds_of_breed(breed, sub_breed_
         assert r.json()["status"] == "success"
 
 
+@pytest.mark.smoke
 @pytest.mark.parametrize("breed", get_breeds())
 def test_images_of_breed_in_results(breed):
     """Test that returned images of breed are correct (by checking if there is a name of the breed in the file names).
@@ -67,12 +81,13 @@ def test_images_of_breed_in_results(breed):
         assert "https://images.dog.ceo/breeds/" + breed in photo, f"Requested photos of '{breed}', but got '{photo}'"
 
 
+@pytest.mark.regression
 @pytest.mark.parametrize("breed, sub_breed_list", get_breeds_which_have_sub_breeds())
 def test_images_of_sub_breed_in_results(breed, sub_breed_list):
     """Test that returned images of sub breed are correct
     (by checking if there is a name of the sub breed in the file names).
     https://dog.ceo/api/breed/hound/afghan/images
-    Returns an array of all the images from a breed, e.g. hound afghan"""
+    Returns an array of all the images from a sub breed, e.g. hound afghan"""
     for sub_breed in sub_breed_list:
         r = requests.get(ENDPOINTS["get all pictures of given sub breed"].format(breed=breed, sub_breed=sub_breed))
         assert r.status_code == 200
