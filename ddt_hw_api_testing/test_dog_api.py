@@ -4,7 +4,6 @@ import cerberus
 
 
 BASE_URL = "https://dog.ceo/api"
-
 ENDPOINTS = {
     "list all breeds": BASE_URL + "/breeds/list/all",
     "pick random picture for breed": BASE_URL + "/breed/{breed}/images/random",
