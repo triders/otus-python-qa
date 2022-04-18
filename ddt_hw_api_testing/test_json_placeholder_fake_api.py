@@ -1,4 +1,5 @@
 import cerberus
+import pytest
 import requests
 
 RESOURCE = {
@@ -8,9 +9,18 @@ RESOURCE = {
     "get all resources": "/posts",
 }
 
+USER = {
+    "create new user": "/users",
+    "get user by id": "/users/{user_id}",
+    "get all users": "/users",
+    "get user's posts": "/users/{user_id}/posts",
+    "get user's todos": "/users/{user_id}/todos",
+    "get user's albums": "/users/{user_id}/albums",
+}
+
 ALBUMS = {
     "create new album": "/albums",
-    "get album by id": "/user/{album_id}",
+    "get album by id": "/albums/{album_id}",
     "get all albums": "/albums",
     "get all photos from album": "/albums/{album_id}/photos",
 }
@@ -41,20 +51,14 @@ class FakeApi:
             body = self.default_body
         if headers is None:
             headers = self.default_headers
-
-        url = self.base_url + endpoint
-        # print(url)
-        return requests.post(url, json=body, headers=headers)
+        return requests.post(self.base_url + endpoint, json=body, headers=headers)
 
     def put(self, endpoint, body=None, headers=None):
         if body is None:
             body = self.default_body
         if headers is None:
             headers = self.default_headers
-
-        url = self.base_url + endpoint
-        # print(url)
-        return requests.put(url, json=body, headers=headers)
+        return requests.put(self.base_url + endpoint, json=body, headers=headers)
 
     def create(self, endpoint, body=None, headers=None):
         return self.post(endpoint, body=body, headers=headers)
@@ -64,39 +68,79 @@ class FakeApi:
 
 
 class User(FakeApi):
-    USER = {
-        "create new user": "/users",
-        "get user by id": "/user/{user_id}",
-        "get all users": "/users",
-        "get user's posts": "/users/{user_id}/posts",
-        "get user's todos": "/users/{user_id}/todos",
-        "get user's albums": "/users/{user_id}/albums",
-    }
 
     def create(self, **kwargs):
-        return super().create(endpoint=self.USER["create new user"], **kwargs).json()
+        return super().create(endpoint=USER["create new user"], **kwargs).json()
+
+    def get(self, endpoint=USER["get user by id"]):
+        return super().get(endpoint=endpoint.format(user_id=self.user_id)).json()
 
     def update_user(self, **kwargs):
-        return super().put(self.USER["get user by id"].format(user_id=self.user_id)).json()
+        return super().put(USER["get user by id"].format(user_id=self.user_id)).json()
 
     def get_user_albums(self):
-        return super().get(self.USER["get user's albums"].format(user_id=self.user_id)).json()
+        return super().get(USER["get user's albums"].format(user_id=self.user_id)).json()
 
 
-def validate_json_schema_for_fake_api_items(user=None):
+def validate_json_schema_for_fake_api_items(create_user=None, get_user=None):
     v = cerberus.Validator()
-    base_schema = {'body': {"type": "string"},
-                   'id': {"type": "integer"},
-                   'title': {"type": "string"},
-                   'userId': {"type": "integer"}
-                   }
+    create_user_response_schema = {
+        'body': {"type": "string"}, 'id': {"type": "integer"},
+        'title': {"type": "string"}, 'userId': {"type": "integer"}
+    }
+    get_user_by_id_schema = {
+        'id': {"type": "integer"}, 'name': {"type": "string"}, 'username': {"type": "string"},
+        'email': {"type": "string"}, 'address': {"type": "dict"}, 'phone': {"type": "string"},
+        'website': {"type": "string"}, 'company': {"type": "dict"}
+    }
+    if create_user:
+        return v.validate(create_user, create_user_response_schema)
+    elif get_user:
+        return v.validate(get_user, get_user_by_id_schema)
 
-    if user:
-        return v.validate(user, base_schema)
+
+@pytest.mark.smoke
+class TestFakeApiHealthCheck:
+
+    def test_user_endpoints_health_check(self):
+        """ensure that GET on each USER endpoint returns 200"""
+
+        for (k, v) in USER.items():
+            if "{user_id}" in v:
+                r = FakeApi().get(v.format(user_id=1))
+            else:
+                r = FakeApi().get(v)
+            assert r.status_code == 200
+
+    def test_albums_endpoints_health_check(self):
+        """ensure that GET on each ALBUM endpoint returns 200"""
+
+        for (k, v) in ALBUMS.items():
+            if "{album_id}" in v:
+                r = FakeApi().get(v.format(album_id=1))
+            else:
+                r = FakeApi().get(v)
+            assert r.status_code == 200
+
+    def test_resources_endpoints_health_check(self):
+        """ensure that GET on each RESOURCE endpoint returns 200"""
+
+        for (k, v) in RESOURCE.items():
+            if "{resource_id}" in v:
+                r = FakeApi().get(v.format(resource_id=1))
+            else:
+                r = FakeApi().get(v)
+            assert r.status_code == 200
 
 
 class TestUsers:
 
     def test_create_user(self):
         user = User().create()
-        assert validate_json_schema_for_fake_api_items(user)
+        assert validate_json_schema_for_fake_api_items(create_user=user)
+
+    @pytest.mark.parametrize("user_id", range(1, 11))
+    def test_get_user_by_id(self, user_id):
+        user = User(user_id=user_id).get()
+        assert validate_json_schema_for_fake_api_items(get_user=user)
+        assert user["id"] == user_id
