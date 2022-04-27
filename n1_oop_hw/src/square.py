@@ -1,4 +1,4 @@
-from src.rectangle import Rectangle
+from n1_oop_hw.src.rectangle import Rectangle
 
 
 class Square(Rectangle):
