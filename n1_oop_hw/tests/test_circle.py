@@ -1,8 +1,8 @@
 import pytest
-from src.circle import Circle
-from src.triangle import Triangle
-from src.rectangle import Rectangle
-from src.square import Square
+from n1_oop_hw.src.circle import Circle
+from n1_oop_hw.src.triangle import Triangle
+from n1_oop_hw.src.rectangle import Rectangle
+from n1_oop_hw.src.square import Square
 
 
 def test_circle_name():
