@@ -5,7 +5,8 @@ from pages.base_page import BasePage
 class ProductPage(BasePage):
 
     LOCATORS = {
-        "product_name": (By.CSS_SELECTOR, "h1")
+        "product name": (By.CSS_SELECTOR, "h1"),
+        "product price": (By.CSS_SELECTOR, "li h2"),
     }
 
     def __init__(self, product_id, *args, **kwargs):

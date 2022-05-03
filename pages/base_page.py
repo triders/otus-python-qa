@@ -18,8 +18,10 @@ class BasePage:
         self.browser.get(self.url)
 
     def is_element_present(self, locator):
+        """Returns element or elements list if found"""
         try:
-            return self.browser.find_element(*locator)
+            elements_list = self.browser.find_elements(*locator)
+            return elements_list[0] if len(elements_list) == 1 else elements_list
         except NoSuchElementException:
             return False
 
@@ -27,8 +29,18 @@ class BasePage:
         try:
             return WebDriverWait(self.browser, timeout).until(ec.visibility_of_element_located(locator))
         except TimeoutException:
-            assert self.is_element_present(locator), \
-                f"Unable to find element with locator '{locator}' in a given timeout: '{timeout}'"
+            raise NoSuchElementException(
+                f"Unable to find element with locator '{locator}' in a given timeout: '{timeout}'")
+
+    def wait_element_clickable(self, locator, timeout=3):
+        try:
+            return WebDriverWait(self.browser, timeout).until(ec.element_to_be_clickable(locator))
+        except TimeoutException:
+            raise NoSuchElementException(
+                f"Unable to find clickable element with locator '{locator}' in a given timeout: '{timeout}'")
 
     def get_element_text(self, locator):
         return self.is_element_present(locator).text
+
+    def get_tab_name(self):
+        return self.browser.title
