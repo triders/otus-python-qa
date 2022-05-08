@@ -7,6 +7,20 @@ import selenium.webdriver.support.expected_conditions as ec
 
 class BasePage:
 
+    LOCATORS = {
+        "logo": (By.CSS_SELECTOR, "div#logo"),
+        "header: contact us": (By.CSS_SELECTOR, "#top-links .fa-phone"),
+        "header: login/register dd": (By.CSS_SELECTOR, "#top-links .fa-user"),
+        "header: wish list": (By.CSS_SELECTOR, "#top-links .fa-heart"),
+        "header: cart": (By.CSS_SELECTOR, "#top-links .fa-shopping-cart"),
+        "header: share": (By.CSS_SELECTOR, "#top-links .fa-share"),
+        "navbar": (By.CSS_SELECTOR, ".navbar#menu"),
+        "navbar items": (By.CSS_SELECTOR, "ul.navbar-nav>li"),
+        "cart button": (By.CSS_SELECTOR, "#cart>button"),
+        "search input": (By.CSS_SELECTOR, "#search>input"),
+        "search button": (By.CSS_SELECTOR, "#search button"),
+    }
+
     def __init__(self, browser, base_url):
         self.browser = browser
         self.url = base_url
