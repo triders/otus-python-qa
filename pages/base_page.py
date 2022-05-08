@@ -19,15 +19,15 @@ class BasePage:
 
     def is_element_present(self, locator):
         """Returns element or elements list if found"""
-        try:
-            elements_list = self.browser.find_elements(*locator)
-            return elements_list[0] if len(elements_list) == 1 else elements_list
-        except NoSuchElementException:
-            return False
+        elements_list = self.browser.find_elements(*locator)
+        return elements_list[0] if len(elements_list) == 1 else elements_list
+
+    def click(self, locator):
+        self.is_element_present(locator).click()
 
     def wait_element(self, locator, timeout=3):
         try:
-            return WebDriverWait(self.browser, timeout).until(ec.visibility_of_element_located(locator))
+            return WebDriverWait(self.browser, timeout).until(ec.visibility_of_all_elements_located(locator))
         except TimeoutException:
             raise NoSuchElementException(
                 f"Unable to find element with locator '{locator}' in a given timeout: '{timeout}'")

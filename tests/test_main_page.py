@@ -16,7 +16,9 @@ def test_nav_bar_on_main_page_exists(browser, base_url):
 def test_nav_bar_items_clickable(browser, base_url):
     main_page = MainPage(browser=browser, base_url=base_url)
     main_page.open()
-    main_page.wait_element_clickable(main_page.LOCATORS["navbar items"])
+    nav_bar_items = main_page.is_element_present(main_page.LOCATORS["navbar items"])
+    for item in nav_bar_items:
+        main_page.wait_element_clickable(item)
 
 
 def test_cart_is_empty(browser, base_url):
