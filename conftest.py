@@ -7,7 +7,7 @@ from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
 
 def pytest_addoption(parser):
-    parser.addoption('--base_url', action='store', default="http://localhost:8081",
+    parser.addoption('--base_url', action='store', default="http://192.168.0.105:8081",
                      help="Opencart base url")
 
     parser.addoption('--browser_name', action='store', default="chrome",
