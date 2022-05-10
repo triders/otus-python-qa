@@ -6,7 +6,7 @@ CATALOG_IDS = ["laptop-notebook", "windows", "tablet", "software", "smartphone",
 
 
 @pytest.mark.parametrize("catalog_id", CATALOG_IDS)
-def test_catalog_page_tab_name_the_same_as_title(catalog_id, browser, base_url):
+def test_catalog_name_the_same_as_tab_name(catalog_id, browser, base_url):
     catalog_page = CatalogPage(catalog_id=catalog_id, browser=browser, base_url=base_url)
     catalog_page.open()
     tab_name = catalog_page.get_tab_name()
