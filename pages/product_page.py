@@ -7,8 +7,9 @@ class ProductPage(BasePage):
     LOCATORS = {
         "product name": (By.CSS_SELECTOR, "h1"),
         "product price": (By.CSS_SELECTOR, "li h2"),
+        "add to cart required fields": (By.CSS_SELECTOR, "#product .form-group.required"),
     }
 
     def __init__(self, product_id, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.url += "/" + product_id
+        self.url += product_id

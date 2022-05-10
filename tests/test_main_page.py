@@ -1,4 +1,8 @@
+import time
+import pytest
+
 from pages.main_page import MainPage
+from pages.product_page import ProductPage
 
 
 def test_logo_on_main_page_exists(browser, base_url):
@@ -29,29 +33,45 @@ def test_cart_is_empty(browser, base_url):
         f"Should be no items in cart, but got {items_in_cart} items, total price is ${total_price}"
 
 
-def test_add_first_featured_product_to_cart_should_be_success_message(browser, base_url):
+@pytest.mark.parametrize("product_index", range(4))
+def test_add_first_featured_product_to_cart_should_be_success_message(product_index, browser, base_url):
     main_page = MainPage(browser=browser, base_url=base_url)
     main_page.open()
     main_page.scroll_to_element(main_page.LOCATORS["featured: add to cart buttons"])
-    add_to_cart_button = main_page.get_element_if_present(locator=main_page.LOCATORS["featured: add to cart buttons"],
-                                                          only_first=True)
-    main_page.click(add_to_cart_button)
-    main_page.wait_element(main_page.LOCATORS["alert"])  # page automatically scrolls to top, but it takes some time
-    success_message = main_page.get_element_if_present(main_page.LOCATORS["alert"], only_first=True)
-    success_message_text = main_page.get_element_text(success_message)
-    assert "Success: You have added MacBook to your shopping cart!" in success_message_text, \
-        f"Expected success message to be ' Success: You have added MacBook to your shopping cart!', " \
-        f"but got {success_message_text}"
+    main_page.add_to_cart(product_index)
+    time.sleep(1)  # url may change, we wait for it
+    if browser.current_url != main_page.url:
+        print(browser.current_url)
+        # if product has required fields it cannot be added from main - redirect to product page occurs.
+        # We check that the product actually has at lease 1 required field here
+        main_page.scroll_to_element(ProductPage.LOCATORS["add to cart required fields"])
+        assert main_page.get_element_if_present(ProductPage.LOCATORS["add to cart required fields"], only_first=True)
+    else:
+        # other products can be added from main page, should be success message
+        main_page.wait_element(main_page.LOCATORS["alert"])  # page automatically scrolls to top, but it takes some time
+        success_message = main_page.get_element_if_present(main_page.LOCATORS["alert"], only_first=True)
+        success_message_text = main_page.get_element_text(success_message)
+        assert "Success: You have added" and " to your shopping cart!" in success_message_text, \
+            f"Expected success message to be ' Success: You have added ... to your shopping cart!', " \
+            f"but got {success_message_text}"
 
 
-def test_add_first_featured_product_to_cart_should_increase_cart_total(browser, base_url):
+@pytest.mark.parametrize("product_index", range(4))
+def test_add_featured_product_to_cart_should_increase_cart_total(product_index, browser, base_url):
     main_page = MainPage(browser=browser, base_url=base_url)
     main_page.open()
     main_page.scroll_to_element(main_page.LOCATORS["featured: add to cart buttons"])
-    add_to_cart_button = main_page.get_element_if_present(locator=main_page.LOCATORS["featured: add to cart buttons"],
-                                                          only_first=True)
-    main_page.click(add_to_cart_button)
-    main_page.wait_element(main_page.LOCATORS["alert"])  # page automatically scrolls to top, but it takes some time
-    items_in_cart, total_price = main_page.get_cart_item_count_and_total_price()
-    assert items_in_cart == 1 and total_price != 0, \
-        f"Should be 1 items in cart, but got {items_in_cart} items, total price is ${total_price}"
+    main_page.add_to_cart(product_index)
+    time.sleep(1)  # url may change, we wait for it
+    if browser.current_url != main_page.url:
+        print(browser.current_url)
+        # if product has required fields it cannot be added from main - redirect to product page occurs.
+        # We check that the product actually has at lease 1 required field here
+        main_page.scroll_to_element(ProductPage.LOCATORS["add to cart required fields"])
+        assert main_page.get_element_if_present(ProductPage.LOCATORS["add to cart required fields"], only_first=True)
+    else:
+        # other products can be added from main page, should be success message
+        main_page.wait_element(main_page.LOCATORS["alert"])  # page automatically scrolls to top, but it takes some time
+        items_in_cart, total_price = main_page.get_cart_item_count_and_total_price()
+        assert items_in_cart == 1 and total_price != 0, \
+            f"Should be 1 items in cart, but got {items_in_cart} items, total price is ${total_price}"

@@ -14,6 +14,8 @@ class MainPage(BasePage):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def add_to_cart(self, index):
-        add_to_cart_button = self.scroll_to_element(self.LOCATORS["featured: add to cart buttons"])
-        add_to_cart_button.click()
+    def add_to_cart(self, index=0):
+        """Add n-th featured product to cart. Adding first item by default"""
+        add_to_cart_button = self.get_element_if_present(
+            locator=self.LOCATORS["featured: add to cart buttons"])
+        self.click(add_to_cart_button[index])
