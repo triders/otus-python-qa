@@ -16,7 +16,7 @@ def test_catalog_name_the_same_as_tab_name(catalog_id, browser, base_url):
 
 
 @pytest.mark.parametrize("catalog_id", CATALOG_IDS)
-def test_if_no_products_in_category(catalog_id, browser, base_url):
+def test_if_no_products_in_category_should_be_corresponding_message(catalog_id, browser, base_url):
     catalog_page = CatalogPage(catalog_id=catalog_id, browser=browser, base_url=base_url)
     catalog_page.open()
     if not catalog_page.get_element_if_present(catalog_page.LOCATORS["products on page"]):

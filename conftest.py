@@ -31,7 +31,9 @@ def browser(request):
     elif browser_name == "firefox":
         browser = webdriver.Firefox(executable_path=GeckoDriverManager().install())
     elif browser_name == "opera":
-        browser = webdriver.Opera(executable_path=OperaDriverManager().install())
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option('w3c', True)
+        browser = webdriver.Opera(executable_path=OperaDriverManager().install(), options=options)
     elif browser_name == "yandex":
         browser = webdriver.Chrome(executable_path="./drivers/yandexdriver")
     elif browser_name == "edge":

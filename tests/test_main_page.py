@@ -25,7 +25,7 @@ def test_nav_bar_items_clickable(browser, base_url):
         main_page.wait_element_clickable(item)
 
 
-def test_cart_is_empty(browser, base_url):
+def test_cart_is_empty_on_first_launch(browser, base_url):
     main_page = MainPage(browser=browser, base_url=base_url)
     main_page.open()
     items_in_cart, total_price = main_page.get_cart_item_count_and_total_price()

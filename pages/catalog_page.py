@@ -18,4 +18,4 @@ class CatalogPage(BasePage):
 
     def __init__(self, catalog_id, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.url += "/" + catalog_id
+        self.url += catalog_id

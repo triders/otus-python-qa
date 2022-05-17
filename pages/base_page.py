@@ -42,6 +42,9 @@ class BasePage:
         else:
             self.get_element_if_present(element_or_locator, only_first=True).click()
 
+    def fill_field(self, locator, text):
+        self.wait_element(locator).send_keys(text)
+
     def scroll_to_element(self, element_or_locator):
         if isinstance(element_or_locator, WebElement):
             self.browser.execute_script("arguments[0].scrollIntoView();", element_or_locator)
