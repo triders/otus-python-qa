@@ -41,7 +41,6 @@ def test_add_featured_product_to_cart_should_be_success_message(product_index, b
     main_page.add_to_cart(product_index)
     time.sleep(1)  # url may change, we wait for it
     if browser.current_url != main_page.url:
-        print(browser.current_url)
         # if product has required fields it cannot be added from main - redirect to product page occurs.
         # We check that the product actually has at least 1 required field here
         main_page.scroll_to_element(ProductPage.LOCATORS["add to cart required fields"])
@@ -64,7 +63,6 @@ def test_add_featured_product_to_cart_should_increase_cart_total(product_index, 
     main_page.add_to_cart(product_index)
     time.sleep(1)  # url may change, we wait for it
     if browser.current_url != main_page.url:
-        print(browser.current_url)
         # if product has required fields it cannot be added from main - redirect to product page occurs.
         # We check that the product actually has at least 1 required field here
         main_page.scroll_to_element(ProductPage.LOCATORS["add to cart required fields"])
