@@ -1,4 +1,3 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
@@ -57,8 +56,13 @@ class BasePage:
         try:
             return WebDriverWait(self.browser, timeout).until(ec.visibility_of_element_located(locator))
         except TimeoutException:
-            raise NoSuchElementException(
-                f"Unable to find element with locator '{locator}' in a given timeout: '{timeout}'")
+            return False
+
+    def wait_element_not_present(self, locator, timeout=3):
+        try:
+            return WebDriverWait(self.browser, timeout).until_not(ec.visibility_of_element_located(locator))
+        except TimeoutException:
+            return False
 
     def wait_element_clickable(self, locator, timeout=3):
         try:

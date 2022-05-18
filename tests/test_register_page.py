@@ -7,7 +7,7 @@ def test_registration(browser, base_url):
     register_page.open()
     register_page.wait_element(register_page.LOCATORS["first name"])
     generated_user = register_page.generate_user()
-    register_page.fill_field(**generated_user)
+    register_page.fill_field_register_page(**generated_user)
     register_page.click(register_page.LOCATORS["agree to privacy policy checkbox"])
     register_page.click(register_page.LOCATORS["continue"])
     assert browser.current_url == base_url + register_page.SUCCESS_REGISTRATION_URL_APPENDIX
@@ -27,7 +27,7 @@ def test_cannot_register_if_do_not_agree_to_policy(browser, base_url):
     register_page.open()
     register_page.wait_element(register_page.LOCATORS["first name"])
     generated_user = register_page.generate_user()
-    register_page.fill_field(**generated_user)
+    register_page.fill_field_register_page(**generated_user)
     # ... skip agree to Policy checkbox
     register_page.click(register_page.LOCATORS["continue"])
     error_banner = register_page.wait_element(register_page.LOCATORS["error banner"])
@@ -44,7 +44,7 @@ def test_cannot_register_if_any_of_mandatory_fields_is_empty(user_data_item, bro
     register_page.wait_element(register_page.LOCATORS["first name"])
     generated_user = register_page.generate_user()
     del (generated_user[user_data_item])
-    register_page.fill_field(**generated_user)
+    register_page.fill_field_register_page(**generated_user)
     register_page.click(register_page.LOCATORS["agree to privacy policy checkbox"])
     register_page.click(register_page.LOCATORS["continue"])
     assert browser.current_url == register_page.url  # url should not change if there is an error in registration
@@ -56,7 +56,7 @@ def test_cannot_register_if_password_and_password_confirmation_do_not_match(brow
     register_page.wait_element(register_page.LOCATORS["first name"])
     generated_user = register_page.generate_user()
     generated_user["password_confirm"] += "$"
-    register_page.fill_field(**generated_user)
+    register_page.fill_field_register_page(**generated_user)
     register_page.click(register_page.LOCATORS["agree to privacy policy checkbox"])
     register_page.click(register_page.LOCATORS["continue"])
     assert browser.current_url == register_page.url  # url should not change if there is an error in registration

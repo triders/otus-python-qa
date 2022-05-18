@@ -32,8 +32,8 @@ class RegisterPage(BasePage):
         super().__init__(browser, base_url)
         self.url += "index.php?route=account/register"
 
-    def fill_field(self, first_name=None, last_name=None, email=None, telephone=None, password=None,
-                   password_confirm=None):
+    def fill_field_register_page(self, first_name=None, last_name=None, email=None, telephone=None, password=None,
+                                 password_confirm=None):
         if first_name:
             super().fill_field(self.LOCATORS["first name"], first_name)
         if last_name:
