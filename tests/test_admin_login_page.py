@@ -10,7 +10,7 @@ def test_login(user, browser, base_url):
     login_page.wait_element(login_page.LOCATORS["username"])
     login_page.fill_field_login_page(**user)
     login_page.click(login_page.LOCATORS["login button"])
-    assert base_url + login_page.LOGGED_IN_URL_APPENDIX_PART in browser.current_url, \
+    assert login_page.LOGGED_IN_URL_APPENDIX_PART in browser.current_url, \
         f"Expected that user '{user['username']}' has been successfully logged in and redirected to " \
         f"'{base_url + login_page.LOGGED_IN_URL_APPENDIX_PART}'"
 
@@ -30,7 +30,7 @@ def test_click_forgotten_password_should_redirect_to_this_page(browser, base_url
     forgotten_password_button = login_page.wait_element(login_page.LOCATORS["forgotten password"])
     login_page.click(forgotten_password_button)
     assert login_page.wait_element(login_page.LOCATORS["email"]) \
-           and browser.current_url == base_url + login_page.FORGOTTEN_PASSWORD_URL_APPENDIX, \
+           and login_page.FORGOTTEN_PASSWORD_URL_APPENDIX in browser.current_url, \
            f"Expected to reach {base_url + login_page.FORGOTTEN_PASSWORD_URL_APPENDIX} " \
            f"after clicking 'forgotten password' but got {browser.current_url}"
 

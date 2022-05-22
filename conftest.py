@@ -16,7 +16,10 @@ def pytest_addoption(parser):
 
 @pytest.fixture
 def base_url(request):
-    return request.config.getoption('--base_url')
+    base_url = request.config.getoption('--base_url')
+    if base_url[-1] != "/":
+        base_url += "/"
+    return base_url
 
 
 @pytest.fixture()

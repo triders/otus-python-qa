@@ -10,7 +10,7 @@ def test_registration(browser, base_url):
     register_page.fill_field_register_page(**generated_user)
     register_page.click(register_page.LOCATORS["agree to privacy policy checkbox"])
     register_page.click(register_page.LOCATORS["continue"])
-    assert browser.current_url == base_url + register_page.SUCCESS_REGISTRATION_URL_APPENDIX
+    assert register_page.SUCCESS_REGISTRATION_URL_APPENDIX in browser.current_url
 
 
 def test_should_be_link_to_login_page(browser, base_url):
@@ -18,7 +18,7 @@ def test_should_be_link_to_login_page(browser, base_url):
     register_page.open()
     login_link = register_page.wait_element(register_page.LOCATORS["login link"])
     register_page.click(login_link)
-    assert browser.current_url == base_url + register_page.LOGIN_URL_APPENDIX, \
+    assert register_page.LOGIN_URL_APPENDIX in browser.current_url, \
         f"Expected to reach '{base_url + register_page.LOGIN_URL_APPENDIX}' after clicking 'login page' link"
 
 
