@@ -7,11 +7,16 @@ from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
 
 def pytest_addoption(parser):
-    parser.addoption('--base_url', action='store', default="http://192.168.0.105:8081/",
+    parser.addoption('--base_url', action='store', default="http://localhost:8081/",
                      help="Opencart base url")
 
     parser.addoption('--browser_name', action='store', default="chrome",
-                 help="Browser to run tests. Default is 'chrome'. Also available: 'safari', 'firefox', 'opera', 'yandex', 'edge'")
+                     help="Browser to run tests. Default is 'chrome'. "
+                          "Also available: 'safari', 'firefox', 'opera', 'yandex', 'edge'")
+
+    parser.addoption('--username', action='store', default="user")
+
+    parser.addoption('--password', action='store', default="bitnami")
 
 
 @pytest.fixture
@@ -22,7 +27,7 @@ def base_url(request):
     return base_url
 
 
-@pytest.fixture()
+@pytest.fixture
 def browser(request):
     browser_name = request.config.getoption('--browser_name')
 
@@ -42,8 +47,16 @@ def browser(request):
     elif browser_name == "edge":
         browser = webdriver.Edge(executable_path=EdgeChromiumDriverManager().install())
     else:
-        raise ValueError(f"'{browser_name}' is not supported. Use 'chrome', 'safari', 'firefox', 'opera', 'yandex', 'edge'")
+        raise ValueError(
+            f"'{browser_name}' is not supported. Use 'chrome', 'safari', 'firefox', 'opera', 'yandex' or 'edge'")
 
     yield browser
 
     browser.close()
+
+
+@pytest.fixture(scope="function")
+def user(request):
+    username = request.config.getoption('--username')
+    password = request.config.getoption('--password')
+    yield {"username": username, "password": password}

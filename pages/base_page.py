@@ -19,6 +19,7 @@ class BasePage:
         "search input": (By.CSS_SELECTOR, "#search>input"),
         "search button": (By.CSS_SELECTOR, "#search button"),
     }
+    TIMEOUT = 3
 
     def __init__(self, browser, base_url):
         self.browser = browser
@@ -44,32 +45,43 @@ class BasePage:
     def fill_field(self, locator, text):
         self.wait_element(locator).send_keys(text)
 
-    def scroll_to_element(self, element_or_locator):
-        if isinstance(element_or_locator, WebElement):
-            self.browser.execute_script("arguments[0].scrollIntoView();", element_or_locator)
-        else:
-            # we expect 'element_or_locator' to be a locator
-            self.browser.execute_script("arguments[0].scrollIntoView();",
-                                        self.browser.find_element(*element_or_locator))
+    def clear_field(self, locator):
+        self.wait_element(locator).clear()
 
-    def wait_element(self, locator, timeout=3):
+    def scroll_to_element(self, element_or_locator):
+        try:
+            if isinstance(element_or_locator, WebElement):
+                self.browser.execute_script("arguments[0].scrollIntoView();", element_or_locator)
+            else:
+                # we expect 'element_or_locator' to be a locator
+                self.browser.execute_script("arguments[0].scrollIntoView();",
+                                            self.browser.find_element(*element_or_locator))
+        except NoSuchElementException:
+            return False
+
+    def wait_element(self, locator, timeout=TIMEOUT):
         try:
             return WebDriverWait(self.browser, timeout).until(ec.visibility_of_element_located(locator))
         except TimeoutException:
             return False
 
-    def wait_element_not_present(self, locator, timeout=3):
+    def wait_element_not_present(self, locator, timeout=TIMEOUT):
         try:
             return WebDriverWait(self.browser, timeout).until_not(ec.visibility_of_element_located(locator))
         except TimeoutException:
             return False
 
-    def wait_element_clickable(self, locator, timeout=3):
+    def wait_element_clickable(self, locator, timeout=TIMEOUT):
         try:
             return WebDriverWait(self.browser, timeout).until(ec.element_to_be_clickable(locator))
         except TimeoutException:
-            raise NoSuchElementException(
-                f"Unable to find clickable element with locator '{locator}' in a given timeout: '{timeout}'")
+            return False
+
+    def wait_alert(self, timeout=TIMEOUT):
+        try:
+            return WebDriverWait(self.browser, timeout).until(ec.alert_is_present())
+        except TimeoutException:
+            return False
 
     def get_element_text(self, element_or_locator):
         if isinstance(element_or_locator, WebElement):
