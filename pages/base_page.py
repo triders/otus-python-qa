@@ -8,6 +8,13 @@ from selenium.webdriver.remote.webelement import WebElement
 class BasePage:
     BASE_PAGE_LOCATORS = {
         "logo": (By.CSS_SELECTOR, "div#logo"),
+        "currency": {
+            "current": (By.CSS_SELECTOR, "#form-currency button strong"),
+            "dropdown": (By.CSS_SELECTOR, "#form-currency .dropdown-toggle"),
+            "USD": (By.CSS_SELECTOR, ".currency-select[name='USD']"),
+            "EUR": (By.CSS_SELECTOR, ".currency-select[name='EUR']"),
+            "GBP": (By.CSS_SELECTOR, ".currency-select[name='GBP']"),
+        },
         "header: contact us": (By.CSS_SELECTOR, "#top-links .fa-phone"),
         "header: login/register dd": (By.CSS_SELECTOR, "#top-links .fa-user"),
         "header: wish list": (By.CSS_SELECTOR, "#top-links .fa-heart"),
@@ -20,6 +27,8 @@ class BasePage:
         "search button": (By.CSS_SELECTOR, "#search button"),
     }
     TIMEOUT = 3
+    CURRENCY_DROPDOWN_STATE = "area-expanded"
+    CURRENCY_SIGNS = {"USD": "$", "EUR": "€", "GBP": "£"}
 
     def __init__(self, browser, base_url):
         self.browser = browser
@@ -91,6 +100,26 @@ class BasePage:
 
     def get_tab_name(self):
         return self.browser.title
+
+    def get_current_currency(self):
+        return self.get_element_text(self.BASE_PAGE_LOCATORS["currency"]["current"])
+
+    def is_currency_dropdown_opened(self):
+        currency_dropdown = self.get_element_if_present(self.BASE_PAGE_LOCATORS["currency"]["dropdown"],
+                                                        only_first=True)
+        return currency_dropdown.get_attribute(self.CURRENCY_DROPDOWN_STATE)
+
+    def change_currency_to(self, currency):
+        if not self.is_currency_dropdown_opened():
+            self.click(self.BASE_PAGE_LOCATORS["currency"]["dropdown"])
+        if currency.upper() == "USD":
+            self.click(self.BASE_PAGE_LOCATORS["currency"]["USD"])
+        elif currency.upper() == "EUR":
+            self.click(self.BASE_PAGE_LOCATORS["currency"]["EUR"])
+        elif currency.upper() == "GBP":
+            self.click(self.BASE_PAGE_LOCATORS["currency"]["GBP"])
+        else:
+            raise ValueError("Please, select currency: 'USD', 'EUR' or 'GBP'")
 
     def get_cart_item_count_and_total_price(self):
         """Get items number and total cart price from the cart button text (on the top-right)"""

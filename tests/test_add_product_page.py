@@ -3,13 +3,14 @@ from pages.admin_products_page import AdminProductsPage
 
 
 def test_click_add_new_product_should_open_this_page(browser, base_url, go_to_add_new_product_page):
-    # should be "Save" button for add new product page
+    """Should be "Save" button on the "Add new product" page"""
     add_page = go_to_add_new_product_page
     assert add_page.wait_element(add_page.LOCATORS["save"]), \
         f"Unable to find the 'Save' button on the 'Add New Product' page."
 
 
 def test_add_new_product_page_contains_all_tabs(browser, base_url, go_to_add_new_product_page):
+    """Should be all tabs on the "Add new product" page: "General", "Data", "Links", "Attribute", etc."""
     add_page = go_to_add_new_product_page
     for tab_name, locator in add_page.LOCATORS["tab"].items():
         assert add_page.get_element_if_present(locator), \
@@ -17,6 +18,7 @@ def test_add_new_product_page_contains_all_tabs(browser, base_url, go_to_add_new
 
 
 def test_general_tab_contains_all_fields(browser, base_url, go_to_add_new_product_page):
+    """Check all fields are present on the "General" tab"""
     add_page = go_to_add_new_product_page
     for field_name, locator in add_page.LOCATORS["general"].items():
         assert add_page.get_element_if_present(locator), \
