@@ -8,6 +8,13 @@ from selenium.webdriver.remote.webelement import WebElement
 class BasePage:
     BASE_PAGE_LOCATORS = {
         "logo": (By.CSS_SELECTOR, "div#logo"),
+        "currency": {
+            "current": (By.CSS_SELECTOR, "#form-currency button strong"),
+            "dropdown": (By.CSS_SELECTOR, "#form-currency .dropdown-toggle"),
+            "USD": (By.CSS_SELECTOR, ".currency-select[name='USD']"),
+            "EUR": (By.CSS_SELECTOR, ".currency-select[name='EUR']"),
+            "GBP": (By.CSS_SELECTOR, ".currency-select[name='GBP']"),
+        },
         "header: contact us": (By.CSS_SELECTOR, "#top-links .fa-phone"),
         "header: login/register dd": (By.CSS_SELECTOR, "#top-links .fa-user"),
         "header: wish list": (By.CSS_SELECTOR, "#top-links .fa-heart"),
@@ -19,6 +26,9 @@ class BasePage:
         "search input": (By.CSS_SELECTOR, "#search>input"),
         "search button": (By.CSS_SELECTOR, "#search button"),
     }
+    TIMEOUT = 3
+    CURRENCY_DROPDOWN_STATE = "area-expanded"
+    CURRENCY_SIGNS = {"USD": "$", "EUR": "€", "GBP": "£"}
 
     def __init__(self, browser, base_url):
         self.browser = browser
@@ -44,32 +54,43 @@ class BasePage:
     def fill_field(self, locator, text):
         self.wait_element(locator).send_keys(text)
 
-    def scroll_to_element(self, element_or_locator):
-        if isinstance(element_or_locator, WebElement):
-            self.browser.execute_script("arguments[0].scrollIntoView();", element_or_locator)
-        else:
-            # we expect 'element_or_locator' to be a locator
-            self.browser.execute_script("arguments[0].scrollIntoView();",
-                                        self.browser.find_element(*element_or_locator))
+    def clear_field(self, locator):
+        self.wait_element(locator).clear()
 
-    def wait_element(self, locator, timeout=3):
+    def scroll_to_element(self, element_or_locator):
+        try:
+            if isinstance(element_or_locator, WebElement):
+                self.browser.execute_script("arguments[0].scrollIntoView();", element_or_locator)
+            else:
+                # we expect 'element_or_locator' to be a locator
+                self.browser.execute_script("arguments[0].scrollIntoView();",
+                                            self.browser.find_element(*element_or_locator))
+        except NoSuchElementException:
+            return False
+
+    def wait_element(self, locator, timeout=TIMEOUT):
         try:
             return WebDriverWait(self.browser, timeout).until(ec.visibility_of_element_located(locator))
         except TimeoutException:
             return False
 
-    def wait_element_not_present(self, locator, timeout=3):
+    def wait_element_not_present(self, locator, timeout=TIMEOUT):
         try:
             return WebDriverWait(self.browser, timeout).until_not(ec.visibility_of_element_located(locator))
         except TimeoutException:
             return False
 
-    def wait_element_clickable(self, locator, timeout=3):
+    def wait_element_clickable(self, locator, timeout=TIMEOUT):
         try:
             return WebDriverWait(self.browser, timeout).until(ec.element_to_be_clickable(locator))
         except TimeoutException:
-            raise NoSuchElementException(
-                f"Unable to find clickable element with locator '{locator}' in a given timeout: '{timeout}'")
+            return False
+
+    def wait_alert(self, timeout=TIMEOUT):
+        try:
+            return WebDriverWait(self.browser, timeout).until(ec.alert_is_present())
+        except TimeoutException:
+            return False
 
     def get_element_text(self, element_or_locator):
         if isinstance(element_or_locator, WebElement):
@@ -79,6 +100,26 @@ class BasePage:
 
     def get_tab_name(self):
         return self.browser.title
+
+    def get_current_currency(self):
+        return self.get_element_text(self.BASE_PAGE_LOCATORS["currency"]["current"])
+
+    def is_currency_dropdown_opened(self):
+        currency_dropdown = self.get_element_if_present(self.BASE_PAGE_LOCATORS["currency"]["dropdown"],
+                                                        only_first=True)
+        return currency_dropdown.get_attribute(self.CURRENCY_DROPDOWN_STATE)
+
+    def change_currency_to(self, currency):
+        if not self.is_currency_dropdown_opened():
+            self.click(self.BASE_PAGE_LOCATORS["currency"]["dropdown"])
+        if currency.upper() == "USD":
+            self.click(self.BASE_PAGE_LOCATORS["currency"]["USD"])
+        elif currency.upper() == "EUR":
+            self.click(self.BASE_PAGE_LOCATORS["currency"]["EUR"])
+        elif currency.upper() == "GBP":
+            self.click(self.BASE_PAGE_LOCATORS["currency"]["GBP"])
+        else:
+            raise ValueError("Please, select currency: 'USD', 'EUR' or 'GBP'")
 
     def get_cart_item_count_and_total_price(self):
         """Get items number and total cart price from the cart button text (on the top-right)"""

@@ -73,3 +73,21 @@ def test_add_featured_product_to_cart_should_increase_cart_total(product_index, 
         items_in_cart, total_price = main_page.get_cart_item_count_and_total_price()
         assert items_in_cart == 1 and total_price != 0, \
             f"Should be 1 items in cart, but got {items_in_cart} items, total price is ${total_price}"
+
+
+def test_usd_should_be_default_currency(browser, base_url):
+    main_page = MainPage(browser=browser, base_url=base_url)
+    main_page.open()
+    current_currency = main_page.get_current_currency()
+    assert current_currency == main_page.CURRENCY_SIGNS["USD"], \
+        f"Expected $ to be default currency, but got {current_currency}"
+
+
+@pytest.mark.parametrize("currency", ["usd", "eur", "gbp"])
+def test_change_currency(currency, browser, base_url):
+    main_page = MainPage(browser=browser, base_url=base_url)
+    main_page.open()
+    main_page.change_currency_to(currency=currency)
+    current_currency = main_page.get_current_currency()
+    assert current_currency == main_page.CURRENCY_SIGNS[currency.upper()], \
+        f"Expected currency to be {main_page.CURRENCY_SIGNS[currency.upper()]}, but got {current_currency}"
