@@ -1,9 +1,10 @@
+import allure
 from selenium.webdriver.common.by import By
+
 from pages.base_page import BasePage
 
 
 class CatalogPage(BasePage):
-
     LOCATORS = {
         "catalog page title": (By.CSS_SELECTOR, "h2"),
         "products on page": (By.CSS_SELECTOR, ".product-layout"),
@@ -24,6 +25,7 @@ class CatalogPage(BasePage):
         super().__init__(*args, **kwargs)
         self.url += catalog_id
 
+    @allure.step("Adding #{index} product to cart (by index in order from left to right)")
     def add_to_cart(self, index=0):
         """Add n-th featured product to cart. Adding first item by default"""
         add_to_cart_button = self.get_element_if_present(

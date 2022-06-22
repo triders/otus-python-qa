@@ -1,5 +1,6 @@
 import time
 
+import allure
 from faker import Faker
 from selenium.webdriver.common.by import By
 
@@ -38,11 +39,13 @@ class AddNewProductPage(BasePage):
     PAGE_TITLE = "Add Product"
     CREATE_NEW_PRODUCT_ERROR_TEXT = " Warning: Please check the form carefully for errors!"
 
+    @allure.step("Switching to tab '{name}' of the 'Add new product' page configuration")
     def switch_to_tab(self, name):
         self.scroll_to_element(self.LOCATORS["tab"][name])
         time.sleep(1)
         self.click(self.LOCATORS["tab"][name])
 
+    @allure.step("Creating the product with parameters: name='{name}', model='{model}', meta='{meta}'")
     def create_product(self, name=None, model=None, meta=None):
         if name is None:
             f = Faker()
