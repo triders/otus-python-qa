@@ -8,7 +8,7 @@ from pages.product_page import ProductPage
 def test_logo_on_main_page_exists(browser, base_url):
     main_page = MainPage(browser=browser, base_url=base_url)
     main_page.open()
-    main_page.wait_element(main_page.BASE_PAGE_LOCATORS["logo"])
+    assert main_page.wait_element(main_page.BASE_PAGE_LOCATORS["logo"])
 
 
 def test_nav_bar_on_main_page_exists(browser, base_url):

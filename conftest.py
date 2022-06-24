@@ -1,9 +1,16 @@
+import os
 import pytest
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.opera import OperaDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
+
+import logging.config
+from logging_settings import logger_config
+
+logging.config.dictConfig(logger_config)
+START_LOGGER = logging.getLogger("file_logger_start")
 
 
 def pytest_addoption(parser):
@@ -60,3 +67,9 @@ def user(request):
     username = request.config.getoption('--username')
     password = request.config.getoption('--password')
     yield {"username": username, "password": password}
+
+
+@pytest.fixture(scope="function", autouse=True)
+def log():
+    current_test_name = os.environ.get('PYTEST_CURRENT_TEST').split(':')[-1].split(' ')[0]
+    START_LOGGER.debug(f"{current_test_name}")

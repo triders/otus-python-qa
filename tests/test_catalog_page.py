@@ -4,6 +4,7 @@ from pages.catalog_page import CatalogPage
 from pages.product_page import ProductPage
 
 CATALOG_IDS = ["laptop-notebook", "windows", "tablet", "software", "smartphone", "mp3-players"]
+# CATALOG_IDS = ["laptop-notebook"]
 
 
 @pytest.mark.parametrize("catalog_id", CATALOG_IDS)
