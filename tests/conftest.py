@@ -17,7 +17,12 @@ def login_as_admin(browser, base_url, user):
 
 
 @pytest.fixture(scope="function")
-def go_to_products(browser, base_url, login_as_admin):
+def go_to_products(browser, base_url, login_as_admin, logged_in=False):
+    if logged_in:
+        page = AdminDashboardPage(browser, base_url)
+        page.wait_element(page.LOCATORS["open catalog"]).click()
+        page.wait_element(page.LOCATORS["catalog: products"]).click()
+        return AdminProductsPage(browser, base_url)
     # go to Products from Dashboard after login
     login_as_admin.go_to_products()
     return AdminProductsPage(browser, base_url)

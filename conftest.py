@@ -1,6 +1,7 @@
 import os
 import pytest
 from selenium import webdriver
+from selenium.webdriver.chromium.options import ChromiumOptions
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.opera import OperaDriverManager
@@ -21,6 +22,8 @@ def pytest_addoption(parser):
                      help="Browser to run tests. Default is 'chrome'. "
                           "Also available: 'safari', 'firefox', 'opera', 'yandex', 'edge'")
 
+    parser.addoption('--headless', action='store_true')
+
     parser.addoption('--username', action='store', default="user")
 
     parser.addoption('--password', action='store', default="bitnami")
@@ -37,10 +40,15 @@ def base_url(request):
 @pytest.fixture
 def browser(request):
     browser_name = request.config.getoption('--browser_name')
+    headless = request.config.getoption('--headless')
 
     browser = None
+    options = None
     if browser_name == "chrome":
-        browser = webdriver.Chrome(executable_path=ChromeDriverManager().install())
+        if headless:
+            options = ChromiumOptions()
+            options.headless = True
+        browser = webdriver.Chrome(executable_path=ChromeDriverManager().install(), options=options)
     elif browser_name == "safari":
         browser = webdriver.Safari()
     elif browser_name == "firefox":
@@ -56,6 +64,8 @@ def browser(request):
     else:
         raise ValueError(
             f"'{browser_name}' is not supported. Use 'chrome', 'safari', 'firefox', 'opera', 'yandex' or 'edge'")
+
+    browser.maximize_window()
 
     yield browser
 

@@ -1,3 +1,5 @@
+import pytest
+
 from pages.admin_products_page import AdminProductsPage
 
 

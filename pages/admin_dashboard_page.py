@@ -1,5 +1,12 @@
+import allure
 from selenium.webdriver.common.by import By
 from pages.base_page import BasePage
+
+import logging.config
+from logging_settings import logger_config
+
+logging.config.dictConfig(logger_config)
+logger = logging.getLogger("file_logger")
 
 
 class AdminDashboardPage(BasePage):
@@ -11,7 +18,9 @@ class AdminDashboardPage(BasePage):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+    @allure.step("Go from 'Dashboard' to 'Products'")
     def go_to_products(self):
+        logger.debug("Going from 'Dashboard' to 'Products'")
         open_catalog_button = self.wait_element(self.LOCATORS["open catalog"])
         open_catalog_button.click()
         open_products_button = self.wait_element(self.LOCATORS["catalog: products"])

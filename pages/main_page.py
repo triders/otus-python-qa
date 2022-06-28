@@ -1,6 +1,13 @@
+import allure
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from pages.base_page import BasePage
+
+import logging.config
+from logging_settings import logger_config
+
+logging.config.dictConfig(logger_config)
+logger = logging.getLogger("file_logger")
 
 
 class MainPage(BasePage):
@@ -14,8 +21,10 @@ class MainPage(BasePage):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def add_to_cart(self, index=0):
-        """Add n-th featured product to cart. Adding first item by default"""
+    @allure.step("Adding to cart the featured product #{index} (from left to right)")
+    def add_to_cart(self, index=1):
+        """Add n-th featured product to cart. Index = 1 (first item) by default"""
         add_to_cart_button = self.get_element_if_present(
             locator=self.LOCATORS["featured: add to cart buttons"])
-        self.click(add_to_cart_button[index])
+        self.click(add_to_cart_button[index - 1])
+        logger.debug(f"Added to cart the featured product #{index} (from left to right)")

@@ -3,6 +3,12 @@ from selenium.webdriver.common.by import By
 
 from pages.base_page import BasePage
 
+import logging.config
+from logging_settings import logger_config
+
+logging.config.dictConfig(logger_config)
+logger = logging.getLogger("file_logger")
+
 
 class ProductPage(BasePage):
     LOCATORS = {
@@ -21,9 +27,11 @@ class ProductPage(BasePage):
         super().__init__(*args, **kwargs)
         self.url += product_id
 
-    @allure.step("Getting the products price")
+    @allure.step("Getting the product's price")
     def get_product_price(self, currency="$"):
         """Returns the products price. Currently, works only when currency is $"""
         if currency == "$":
             #  example is "$122.00"
-            return float(self.get_element_text(self.LOCATORS["product price"])[1:])
+            product_price = float(self.get_element_text(self.LOCATORS["product price"])[1:])
+            logger.debug(f"Found that the price of the product is ${product_price}")
+            return product_price

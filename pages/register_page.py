@@ -2,6 +2,13 @@ from faker import Faker
 from selenium.webdriver.common.by import By
 from pages.base_page import BasePage
 
+import logging.config
+from logging_settings import logger_config
+
+logging.config.dictConfig(logger_config)
+logger = logging.getLogger("file_logger")
+
+
 EXAMPLE_USER = {
     "first_name": "John", "last_name": "Doe", "email": "john.doe@example.com",
     "telephone": "+123456", "password": "qwerty", "password_confirm": "qwerty"
@@ -54,4 +61,5 @@ class RegisterPage(BasePage):
             "first_name": f.first_name(), "last_name": f.last_name(), "email": f.email(),
             "telephone": f.phone_number(), "password": password, "password_confirm": password
         }
+        logger.debug(f"Generated user with data: {generated_user}")
         return generated_user

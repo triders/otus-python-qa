@@ -2,7 +2,8 @@ import pytest
 from pages.product_page import ProductPage
 
 PRODUCT_IDS = [
-    "iphone", "imac", "test", "canon-eos-5d", "nikon-d300", "samsung-syncmaster-941bw"
+    "iphone", 
+    # "iphone", "imac", "test", "canon-eos-5d", "nikon-d300", "samsung-syncmaster-941bw"
 ]
 XFAIL_PRODUCT_IDS_FOR_test_product_name_the_same_as_tab_name = [
     "iphone", "imac",
