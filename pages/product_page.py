@@ -7,7 +7,7 @@ import logging.config
 from logging_settings import logger_config
 
 logging.config.dictConfig(logger_config)
-logger = logging.getLogger("file_logger")
+LOGGER = logging.getLogger("file_logger")
 
 
 class ProductPage(BasePage):
@@ -33,5 +33,5 @@ class ProductPage(BasePage):
         if currency == "$":
             #  example is "$122.00"
             product_price = float(self.get_element_text(self.LOCATORS["product price"])[1:])
-            logger.debug(f"Found that the price of the product is ${product_price}")
+            LOGGER.debug(f"Found that the price of the product is ${product_price}")
             return product_price

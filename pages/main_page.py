@@ -7,7 +7,7 @@ import logging.config
 from logging_settings import logger_config
 
 logging.config.dictConfig(logger_config)
-logger = logging.getLogger("file_logger")
+LOGGER = logging.getLogger("file_logger")
 
 
 class MainPage(BasePage):
@@ -27,4 +27,4 @@ class MainPage(BasePage):
         add_to_cart_button = self.get_element_if_present(
             locator=self.LOCATORS["featured: add to cart buttons"])
         self.click(add_to_cart_button[index - 1])
-        logger.debug(f"Added to cart the featured product #{index} (from left to right)")
+        LOGGER.debug(f"Added to cart the featured product #{index} (from left to right)")

@@ -6,7 +6,7 @@ import logging.config
 from logging_settings import logger_config
 
 logging.config.dictConfig(logger_config)
-logger = logging.getLogger("file_logger")
+LOGGER = logging.getLogger("file_logger")
 
 
 class AdminDashboardPage(BasePage):
@@ -20,7 +20,7 @@ class AdminDashboardPage(BasePage):
 
     @allure.step("Go from 'Dashboard' to 'Products'")
     def go_to_products(self):
-        logger.debug("Going from 'Dashboard' to 'Products'")
+        LOGGER.debug("Going from 'Dashboard' to 'Products'")
         open_catalog_button = self.wait_element(self.LOCATORS["open catalog"])
         open_catalog_button.click()
         open_products_button = self.wait_element(self.LOCATORS["catalog: products"])

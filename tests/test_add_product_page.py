@@ -25,6 +25,7 @@ def test_general_tab_contains_all_fields(browser, base_url, go_to_add_new_produc
             f"Unable to locate '{field_name}' field on the 'General' tab."
 
 
+@pytest.mark.xfail(reason="Fails in headless mode (only)")
 def test_can_add_new_product_filling_only_required_fields(browser, base_url, go_to_add_new_product_page):
     """Create product filling only required fields: name, meta, model"""
     add_page = go_to_add_new_product_page

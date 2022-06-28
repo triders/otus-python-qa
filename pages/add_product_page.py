@@ -8,7 +8,7 @@ from logging_settings import logger_config
 from pages.base_page import BasePage
 
 logging.config.dictConfig(logger_config)
-logger = logging.getLogger("file_logger")
+LOGGER = logging.getLogger("file_logger")
 
 
 class AddNewProductPage(BasePage):
@@ -47,7 +47,7 @@ class AddNewProductPage(BasePage):
     def switch_to_tab(self, name):
         self.scroll_to_element(self.LOCATORS["tab"][name])
         self.click(self.LOCATORS["tab"][name])
-        logger.debug(f"Switched to tab '{name}'")
+        LOGGER.debug(f"Switched to tab '{name}'")
 
     @allure.step("Creating the product with parameters: name='{name}', model='{model}', meta='{meta}'")
     def create_product(self, name=None, model=None, meta=None):
@@ -59,14 +59,14 @@ class AddNewProductPage(BasePage):
         if meta is None:
             meta = "cucumber"
 
-        logger.debug(f"Creating a product with parameters: name='{name}', model='{model}', meta='{meta}")
+        LOGGER.debug(f"Creating a product with parameters: name='{name}', model='{model}', meta='{meta}")
         self.fill_field(self.LOCATORS["general"]["name"], name)
         self.fill_field(self.LOCATORS["general"]["meta"], meta)
         self.switch_to_tab("data")
         self.fill_field(self.LOCATORS["data"]["model"], model)
 
         self.click(self.LOCATORS["save"])
-        logger.debug(f"Created the product")
+        LOGGER.debug(f"Created the product")
 
         created_product = {"name": name, "model": model, "meta": meta}
         return created_product

@@ -55,7 +55,7 @@ def test_add_featured_product_to_cart_should_be_success_message(product_index, b
             f"but got {success_message_text}"
 
 
-@pytest.mark.parametrize("product_index", range(1, 5))
+@pytest.mark.parametrize("product_index", range(1, 3))
 def test_add_featured_product_to_cart_should_increase_cart_total(product_index, browser, base_url):
     main_page = MainPage(browser=browser, base_url=base_url)
     main_page.open()
