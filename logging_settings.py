@@ -7,6 +7,11 @@ logger_config = {
         'start_format': {
             'format': "\n_________________ <<< Started test: '{message}' @ {asctime} >>> _________________",
             'style': '{',
+        },
+        'env_format': {
+            'format': "\n\n\n--------------------------------------------------------------------------------"
+                      "\n>>> {message}",
+            'style': '{',
         }
     },
     'handlers': {
@@ -26,6 +31,12 @@ logger_config = {
             'filename': 'tests.log',
             'level': 'DEBUG',
             'formatter': 'start_format'
+        },
+        'file_env': {
+            'class': 'logging.FileHandler',
+            'filename': 'tests.log',
+            'level': 'DEBUG',
+            'formatter': 'env_format'
         }
     },
     'loggers': {
@@ -36,6 +47,10 @@ logger_config = {
         'file_logger': {
             'level': 'DEBUG',
             'handlers': ['file']
+        },
+        'file_logger_env': {
+            'level': 'DEBUG',
+            'handlers': ['file_env']
         },
         'file_logger_start': {
             'level': 'DEBUG',

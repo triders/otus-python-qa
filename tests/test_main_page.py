@@ -33,7 +33,7 @@ def test_cart_is_empty_on_first_launch(browser, base_url):
         f"Should be no items in cart, but got {items_in_cart} items, total price is ${total_price}"
 
 
-@pytest.mark.parametrize("product_index", range(1, 5))
+@pytest.mark.parametrize("product_index", range(1, 3))
 def test_add_featured_product_to_cart_should_be_success_message(product_index, browser, base_url):
     main_page = MainPage(browser=browser, base_url=base_url)
     main_page.open()
