@@ -1,4 +1,5 @@
 import pytest
+import allure
 import logging.config
 
 from pages.admin_products_page import AdminProductsPage
@@ -17,12 +18,16 @@ def test_add_new_product_and_delete(browser, base_url, go_to_add_new_product_pag
     products_page = AdminProductsPage(browser, base_url)
     products_page.filter_and_select_the_exact_product(created_product["name"])
     products_page.delete_selected_products()
-    product_number_after_deletion = products_page.\
-        filter_products_by(name=created_product["name"]).\
+    product_number_after_deletion = products_page. \
+        filter_products_by(name=created_product["name"]). \
         get_products_number_on_page()
     LOGGER.debug("ASSERT: There is no products on page (deleted product and filtered product by its name")
-    assert product_number_after_deletion == 0, \
-           f"Didn't expect to find the product '{created_product['name']}' on page after deletion, but found it!"
+    try:
+        assert product_number_after_deletion == 0, \
+            f"Didn't expect to find the product '{created_product['name']}' on page after deletion, but found it!"
+    except Exception as e:
+        allure.attach(browser.get_screenshot_as_png(), "Screenshot on failure", allure.attachment_type.PNG)
+        raise e
 
 
 @pytest.mark.xfail(reason="Fails in headless mode (only)")
@@ -34,9 +39,13 @@ def test_should_be_alert_on_delete_action(browser, base_url, go_to_add_new_produ
     products_page.filter_and_select_the_exact_product(created_product["name"])
     products_page.click(products_page.LOCATORS["delete"])
     LOGGER.debug("ASSERT: There is browser alert, after clicking the 'Delete' button")
-    assert products_page.wait_alert(), \
-        f"Expected to get an alert after pressing the delete button, but didn't find one."
-    products_page.wait_alert().accept()
+    try:
+        assert products_page.wait_alert(), \
+            f"Expected to get an alert after pressing the delete button, but didn't find one."
+        products_page.wait_alert().accept()
+    except Exception as e:
+        allure.attach(browser.get_screenshot_as_png(), "Screenshot on failure", allure.attachment_type.PNG)
+        raise e
 
 
 @pytest.mark.xfail(reason="Fails in headless mode (only)")
@@ -47,10 +56,14 @@ def test_should_not_delete_product_if_dismiss_alert(browser, base_url, go_to_add
     products_page.filter_and_select_the_exact_product(created_product["name"])
     products_page.click(products_page.LOCATORS["delete"])
     products_page.wait_alert().dismiss()
-    product_number_after_deletion = products_page.\
+    product_number_after_deletion = products_page. \
         filter_products_by(name=created_product["name"]). \
         get_products_number_on_page()
     LOGGER.debug(f"ASSERT: There is '{created_product['name']}' on page, because we didn't confirm deleting it")
-    assert product_number_after_deletion == 1, \
-        f"Expected to find the product '{created_product['name']}' on page, because it should not been deleted, " \
-        f"but didn't found it!"
+    try:
+        assert product_number_after_deletion == 1, \
+            f"Expected to find the product '{created_product['name']}' on page, because it should not been deleted, " \
+            f"but didn't found it!"
+    except Exception as e:
+        allure.attach(browser.get_screenshot_as_png(), "Screenshot on failure", allure.attachment_type.PNG)
+        raise e
