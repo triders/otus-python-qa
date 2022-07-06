@@ -1,4 +1,4 @@
-from n1_oop_hw.src.figure import Figure
+from first_homeworks.oop_geometry_figures.src.figure import Figure
 
 
 class Rectangle(Figure):

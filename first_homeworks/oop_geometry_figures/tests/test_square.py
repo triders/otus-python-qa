@@ -1,8 +1,8 @@
 import pytest
-from n1_oop_hw.src.triangle import Triangle
-from n1_oop_hw.src.rectangle import Rectangle
-from n1_oop_hw.src.square import Square
-from n1_oop_hw.src.circle import Circle
+from first_homeworks.oop_geometry_figures.src.triangle import Triangle
+from first_homeworks.oop_geometry_figures.src.rectangle import Rectangle
+from first_homeworks.oop_geometry_figures.src.square import Square
+from first_homeworks.oop_geometry_figures.src.circle import Circle
 
 
 def test_square_name():
