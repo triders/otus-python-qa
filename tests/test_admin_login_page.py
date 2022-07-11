@@ -3,7 +3,7 @@ from pages.admin_login_page import AdminLoginPage
 from pages.auth import Users
 
 
-@pytest.mark.parametrize("user", [Users.ADMIN, Users.NON_ADMIN])
+@pytest.mark.parametrize("user", [Users.ADMIN])
 def test_login(user, browser, base_url):
     login_page = AdminLoginPage(browser, base_url)
     login_page.open()

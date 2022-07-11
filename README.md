@@ -14,6 +14,18 @@ class Users:
     NON_ADMIN = {"username": "", "password": ""}  # need to create
     NON_EXISTING_USER = {"username": "foofoo", "password": "barbar"}
 ```
+
 2. Fill in credentials in this file, where:
-   1. `ADMIN` is a default '**opencart**' admin (get from: https://gist.github.com/konflic/ecd93a4bf7666d97d62bcecbe2713e55)
-   2. `ADMIN_USER2` and `NON_ADMIN` do not exist by default. You need to create them manually in `http://OPENCART_BASE_URL/admin` (with admin and non-admin rights respectively)
+   1. `ADMIN` is a default '**opencart**' admin (get
+      from: https://gist.github.com/konflic/ecd93a4bf7666d97d62bcecbe2713e55)
+   2. `ADMIN_USER2` and `NON_ADMIN` do not exist by default. You need to create them manually
+      in `http://OPENCART_BASE_URL/admin` (with admin and non-admin rights respectively)
+
+3. Allure reports
+   1. install allure
+   2. run `allure generate`
+
+4. Run via Selenoid
+   1. `./cm selenoid start --vnc`
+   2. `./cm selenoid-ui start` (optional)
+   3. `pytest --executor={SELENOID_IP}` (or `pytest --executor=local` to run locally) 
