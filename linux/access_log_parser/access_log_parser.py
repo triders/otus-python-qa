@@ -17,7 +17,7 @@ parser.add_argument('--d', dest='path_to_directory', action='store',
                     help='Path to directory with logfiles to be processed')
 parser.add_argument('--n', dest='top_n', type=int, action='store', default=3,
                     help='How many top elements (ip, request duration)')
-parser.add_argument('--v', dest='verbose', action='store', default=False,
+parser.add_argument('--v', dest='verbose', action='store_true', default=False,
                     help='Print execution progress in stdout')
 args = parser.parse_args()
 
@@ -53,8 +53,9 @@ def _count_requests_by_methods(path_to_logfile) -> list:
                      "CONNECT": 0, "OPTIONS": 0, "TRACE": 0, "PATCH": 0}
     with open(path_to_logfile, "r") as log:
         for line in log:
-            match = re.search(RE_METHOD, line)
-            methods_count[match.group(0)] += 1
+            method_match = re.search(RE_METHOD, line)
+            if method_match:
+                methods_count[method_match.group(0)] += 1
     methods_count = sorted(methods_count.items(), key=lambda t: -t[1])
     return methods_count
 
@@ -64,8 +65,9 @@ def _get_top_n_ips(path_to_logfile, how_much_top_items) -> list:
     with open(path_to_logfile, "r") as log:
         ip_list = []
         for line in log:
-            ip = re.match(RE_IP_ADDRESS, line)
-            ip_list.append(ip.group(0))
+            ip_match = re.match(RE_IP_ADDRESS, line)
+            if ip_match:
+                ip_list.append(ip_match.group(0))
 
     # count requests for each ip
     ip_requests = {ip: 0 for ip in set(ip_list)}
