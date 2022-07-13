@@ -129,6 +129,10 @@ dmypy.json
 .pyre/
 .idea/
 .DS_Store
+
+# my
+allure-report/
+allure-results/
 cm
 drivers/
-auth.py
+pages/auth.py
