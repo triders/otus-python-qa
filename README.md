@@ -1,8 +1,8 @@
-# otus-python-qa
 Homework for online course Python QA Engineer from OTUS
 https://otus.ru/lessons/avtomatizaciya-web-testirovaniya/
 
-
+### Parser for `access.log` file. How-to:
+## 1. PAGE OBJECTS:
 ### Preparation
 To run tests for **opencart**:
 1. Add `auth.py` in the `pages` directory with the following content structure:
@@ -29,3 +29,9 @@ class Users:
    1. `./cm selenoid start --vnc`
    2. `./cm selenoid-ui start` (optional)
    3. `pytest --executor={SELENOID_IP}` (or `pytest --executor=local` to run locally) 
+
+
+## 2. Parser for `access.log` file. How-to:
+Format must be the following:
+
+`'91.113.11.120 - - [24/Sep/2019:21:16:13 +0200] "GET /apple-touch-icon-120x120-precomposed.png HTTP/1.1" 404 246 "-" "MobileSafari/604.1 CFNetwork/978.0.7 Darwin/18.7.0" 6203'`
