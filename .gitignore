@@ -135,4 +135,5 @@ allure-report/
 allure-results/
 cm
 drivers/
-pages/auth.py
+page_objects_and_tests_for_opencart/pages/auth.py
+linux/param_iko/ssh_auth.py
