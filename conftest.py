@@ -30,8 +30,8 @@ def pytest_addoption(parser):
     parser.addoption("--logs", action="store_true")
     parser.addoption("--videos", action="store_true")
     parser.addoption("--bv", default=None)
-    parser.addoption('--username', action='store', default="user")
-    parser.addoption('--password', action='store', default="bitnami")
+    parser.addoption('--username', action='store')
+    parser.addoption('--password', action='store')
 
 
 @pytest.fixture

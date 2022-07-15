@@ -5,7 +5,7 @@ from faker import Faker
 from selenium.webdriver.common.by import By
 
 from logging_settings import logger_config
-from pages.base_page import BasePage
+from page_objects_and_tests_for_opencart.pages.base_page import BasePage
 
 logging.config.dictConfig(logger_config)
 LOGGER = logging.getLogger("file_logger")

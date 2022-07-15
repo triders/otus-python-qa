@@ -1,5 +1,5 @@
 import pytest
-from pages.register_page import RegisterPage, EXAMPLE_USER
+from page_objects_and_tests_for_opencart.pages.register_page import RegisterPage, EXAMPLE_USER
 
 
 def test_registration(browser, base_url):

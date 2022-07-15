@@ -1,5 +1,5 @@
 import pytest
-from pages.admin_products_page import AdminProductsPage
+from page_objects_and_tests_for_opencart.pages.admin_products_page import AdminProductsPage
 
 
 def test_click_add_new_product_should_open_this_page(browser, base_url, go_to_add_new_product_page):

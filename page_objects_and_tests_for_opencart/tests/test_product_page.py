@@ -1,5 +1,5 @@
 import pytest
-from pages.product_page import ProductPage
+from page_objects_and_tests_for_opencart.pages.product_page import ProductPage
 
 PRODUCT_IDS = [
     "iphone", 

@@ -2,7 +2,7 @@ import pytest
 import allure
 import logging.config
 
-from pages.admin_products_page import AdminProductsPage
+from page_objects_and_tests_for_opencart.pages.admin_products_page import AdminProductsPage
 
 from logging_settings import logger_config
 

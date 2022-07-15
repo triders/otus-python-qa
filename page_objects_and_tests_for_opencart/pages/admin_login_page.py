@@ -1,4 +1,4 @@
-from pages.base_page import BasePage
+from page_objects_and_tests_for_opencart.pages.base_page import BasePage
 from selenium.webdriver.common.by import By
 
 

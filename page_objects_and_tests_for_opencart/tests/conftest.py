@@ -1,9 +1,9 @@
 import pytest
 
-from pages.admin_login_page import AdminLoginPage
-from pages.admin_dashboard_page import AdminDashboardPage
-from pages.add_product_page import AddNewProductPage
-from pages.admin_products_page import AdminProductsPage
+from page_objects_and_tests_for_opencart.pages.admin_login_page import AdminLoginPage
+from page_objects_and_tests_for_opencart.pages.admin_dashboard_page import AdminDashboardPage
+from page_objects_and_tests_for_opencart.pages.add_product_page import AddNewProductPage
+from page_objects_and_tests_for_opencart.pages.admin_products_page import AdminProductsPage
 
 
 @pytest.fixture(scope="function")
