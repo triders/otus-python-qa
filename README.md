@@ -48,3 +48,20 @@ Format must be the following:
 4. (optional) `--v` Print the execution progress in stdout. Default is `False`
 
 Results will be written in the file `result_access_log_stats.json` (in the directory of the script)
+
+## 3. Socket: simple HTTP server
+
+0. `cd /linux/sockets_hw`
+1. SERVER
+   - `python3 socket_server.py {BACKLOG}` start a localhost server. You can type a number of backlog connections server
+     will listen to (default is 10).
+2. CURL
+   - `curl 127.0.0.1:PORT`
+3. Open in Browser
+   - `http://127.0.0.1:PORT/`
+4. BONUS: CLIENT script
+   - `python3 socket_client.py {SERVER_PORT}`
+      - Type a request to server in the HTTP format, e.g.:
+        `GET /?status=500 HTTP/1.1\r\nHeader one: one\r\nHeader two: two\r\nContent-Type: text/html\r\n\r\n`
+      - OR Type `'path:path/to/file'` to send an HTTP request from a text file (see/use the examples at ./http_requests
+        folder)
