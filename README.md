@@ -49,6 +49,7 @@ Format must be the following:
 
 Results will be written in the file `result_access_log_stats.json` (in the directory of the script)
 
+
 ## 3. API DDT tests
 _Run API DDT tests via Docker_
 1. `docker build -t tests_api:1.0 ./api_data_driven_tests`
@@ -56,3 +57,20 @@ _Run API DDT tests via Docker_
    OR better option is to run in parallel:
     `docker run --rm tests_api:1.0 pytest -n 5` 
 
+
+## 4. Socket: simple HTTP server
+
+0. `cd /linux/sockets_hw`
+1. SERVER
+   - `python3 socket_server.py {BACKLOG}` start a localhost server. You can type a number of backlog connections server
+     will listen to (default is 10).
+2. CURL
+   - `curl 127.0.0.1:PORT`
+3. Open in Browser
+   - `http://127.0.0.1:PORT/`
+4. BONUS: CLIENT script
+   - `python3 socket_client.py {SERVER_PORT}`
+      - Type a request to server in the HTTP format, e.g.:
+        `GET /?status=500 HTTP/1.1\r\nHeader one: one\r\nHeader two: two\r\nContent-Type: text/html\r\n\r\n`
+      - OR Type `'path:path/to/file'` to send an HTTP request from a text file (see/use the examples at ./http_requests
+        folder)
