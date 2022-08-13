@@ -49,7 +49,16 @@ Format must be the following:
 
 Results will be written in the file `result_access_log_stats.json` (in the directory of the script)
 
-## 3. Socket: simple HTTP server
+
+## 3. API DDT tests
+_Run API DDT tests via Docker_
+1. `docker build -t tests_api:1.0 ./api_data_driven_tests`
+2. `docker run --rm tests_api:1.0`
+   OR better option is to run in parallel:
+    `docker run --rm tests_api:1.0 pytest -n 5` 
+
+
+## 4. Socket: simple HTTP server
 
 0. `cd /linux/sockets_hw`
 1. SERVER

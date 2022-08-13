@@ -17,13 +17,13 @@ LOGGER_ENV = logging.getLogger("file_logger_env")
 
 
 def pytest_addoption(parser):
-    parser.addoption('--base_url', action='store', default="http://172.20.10.2:8081/",
+    parser.addoption('--base_url', action='store', default="http://localhost",
                      help="Opencart base url")
     parser.addoption('--browser_name', action='store', default="chrome",
                      help="Browser to run tests. Default is 'chrome'. "
                           "Also available: 'safari', 'firefox', 'opera', 'yandex', 'edge'")
     parser.addoption('--headless', action='store_true')
-    parser.addoption("--executor", action="store", default="10.232.146.2",
+    parser.addoption("--executor", action="store", default="local",
                      help="Specify IP of Selenoid. Or 'local' to run without Selenoid. Default is 'localhost'")
     parser.addoption("--mobile", action="store_true")
     parser.addoption("--vnc", action="store_true")
