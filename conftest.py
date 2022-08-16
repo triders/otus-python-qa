@@ -49,6 +49,7 @@ def browser(request):
     executor = request.config.getoption("--executor")
     version = request.config.getoption("--bv")
     vnc = request.config.getoption("--vnc")
+    videos = request.config.getoption("--videos")
 
     browser = None
     options = None
@@ -84,6 +85,7 @@ def browser(request):
             "name": "Timofei",
             "selenoid:options": {
                 "enableVNC": vnc,
+                "enableVideo": videos
             },
             'acceptSslCerts': True,
             'acceptInsecureCerts': True,

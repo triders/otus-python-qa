@@ -20,18 +20,22 @@ pytest --browser_name=chrome --bv=102.0 --base_url=http://192.168.1.1:8081 --use
       ```
 
 1. `pytest` arguments
-   1. `--base_url=http://192.168.1.1:8081` URL to running opencart
+   1. `--base_url=http://192.168.1.1:8081` URL to running opencart (How-to setup in p.3 below)
    2. `--browser_name=chrome` select browser name
    3. `--executor`
       1. `--executor=local` to run locally
       2. `--executor={REMOTE_EXECUTOR_IP}` to run via Selenoid, arguments:
-         1. `--vnc` capture [UI of execution](https://aerokube.com/selenoid-ui/latest/)
+         1. `--vnc` capture [UI of tests execution](https://aerokube.com/selenoid-ui/latest/)
          2. `--bv` select browser version
+         3. `--videos` save UI of tests execution to files 
 2. Selenoid setup
-   1. Prepare Selenoid via Configuration Manager:
+   1. Prepare Selenoid via [Configuration Manager](https://aerokube.com/cm/latest/):
    2. `./cm selenoid start --vnc`
-   3. `./cm selenoid-ui start` (optional)
-3. Allure reports
+   3. `./cm selenoid-ui start`
+3. OpenCart setup
+   1. specify your local IP to `opencart_ui_tests/opencart_docker/docker-compose.yml` > `OPENCART_HOST:192.168.1.1`
+   2. run `opencart_ui_tests/opencart_docker/docker-compose.yml`
+4. Allure reports
    1. install Allure
    2. run `allure generate`
 

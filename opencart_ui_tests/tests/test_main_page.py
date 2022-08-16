@@ -2,8 +2,8 @@ import time
 import allure
 import pytest
 
-from page_objects_and_tests_for_opencart.pages.main_page import MainPage
-from page_objects_and_tests_for_opencart.pages.product_page import ProductPage
+from opencart_ui_tests.pages.main_page import MainPage
+from opencart_ui_tests.pages.product_page import ProductPage
 
 
 def test_logo_on_main_page_exists(browser, base_url):

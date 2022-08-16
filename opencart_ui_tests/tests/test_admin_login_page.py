@@ -1,5 +1,5 @@
 import pytest
-from page_objects_and_tests_for_opencart.pages.admin_login_page import AdminLoginPage
+from opencart_ui_tests.pages.admin_login_page import AdminLoginPage
 from pages.auth import Users
 
 

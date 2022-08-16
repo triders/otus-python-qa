@@ -1,7 +1,7 @@
 import time
 import pytest
-from page_objects_and_tests_for_opencart.pages.catalog_page import CatalogPage
-from page_objects_and_tests_for_opencart.pages.product_page import ProductPage
+from opencart_ui_tests.pages.catalog_page import CatalogPage
+from opencart_ui_tests.pages.product_page import ProductPage
 
 CATALOG_IDS = ["laptop-notebook", "windows", "tablet", "software", "smartphone", "mp3-players"]
 # CATALOG_IDS = ["laptop-notebook"]
