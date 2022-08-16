@@ -4,7 +4,7 @@ import allure
 from faker import Faker
 from selenium.webdriver.common.by import By
 
-from logging_settings import logger_config
+from opencart_ui_tests.logging_settings import logger_config
 from opencart_ui_tests.pages.base_page import BasePage
 
 logging.config.dictConfig(logger_config)

@@ -7,7 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.wait import WebDriverWait
 
-from logging_settings import logger_config
+from opencart_ui_tests.logging_settings import logger_config
 
 logging.config.dictConfig(logger_config)
 LOGGER = logging.getLogger("file_logger")
@@ -103,7 +103,7 @@ class BasePage:
     def wait_element_not_present(self, locator, timeout=TIMEOUT):
         try:
             LOGGER.debug(f"Waiting element NOT to be present: {locator} for {timeout} seconds")
-            WebDriverWait(self.browser, timeout).until_not(ec.visibility_of_element_located(locator))
+            return WebDriverWait(self.browser, timeout).until_not(ec.visibility_of_element_located(locator))
         except TimeoutException:
             LOGGER.warning(f"Didn't expect to find element: {locator}; waited for {timeout} seconds ")
             return False
@@ -164,7 +164,7 @@ class BasePage:
     @allure.step("Getting total items count and price from cart")
     def get_cart_item_count_and_total_price(self):
         """Get items number and total cart price from the cart button text (on the top-right)"""
-        cart_text = self.get_element_text(BasePage.BASE_PAGE_LOCATORS["cart button"]).strip()  # "2 item(s) - $724.00"
+        cart_text = self.get_element_text(BasePage.BASE_PAGE_LOCATORS["cart button"]).replace(",", "").strip()  # "2 item(s) - $1,724.00"
         LOGGER.debug(f"Cart has {cart_text} in total ")
         cart_text_split = cart_text.split(" item(s) - $")
         items_in_cart, total_price = int(cart_text_split[0]), float(cart_text_split[1])

@@ -1,4 +1,5 @@
 import pytest
+from faker import Faker
 
 from opencart_ui_tests.pages.admin_login_page import AdminLoginPage
 from opencart_ui_tests.pages.admin_dashboard_page import AdminDashboardPage
@@ -33,3 +34,13 @@ def go_to_add_new_product_page(browser, base_url, go_to_products):
     # click "Add New" on the Products page
     go_to_products.click_add_new_product()
     return AddNewProductPage(browser, base_url)
+
+
+@pytest.fixture(scope="function")
+def fake_user():
+    f = Faker()
+    fake_user = {
+        "username": f.first_name(),
+        "password": f.password()
+    }
+    return fake_user

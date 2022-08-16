@@ -4,7 +4,7 @@ import logging.config
 
 from opencart_ui_tests.pages.admin_products_page import AdminProductsPage
 
-from logging_settings import logger_config
+from opencart_ui_tests.logging_settings import logger_config
 
 logging.config.dictConfig(logger_config)
 LOGGER = logging.getLogger("file_logger")

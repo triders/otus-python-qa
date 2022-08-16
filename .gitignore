@@ -137,3 +137,4 @@ cm
 drivers/
 *auth.py
 linux/param_iko/ssh_auth.py
+screenshot
