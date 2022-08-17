@@ -8,8 +8,9 @@ from opencart_ui_tests.logging_settings import logger_config
 
 logging.config.dictConfig(logger_config)
 LOGGER = logging.getLogger("file_logger")
-CATALOG_IDS = ["laptop-notebook"]
-# CATALOG_IDS = ["laptop-notebook", "windows", "tablet", "software", "smartphone", "mp3-players"]
+CATALOG_IDS = [
+    pytest.param("laptop-notebook", marks=pytest.mark.smoke),
+     "windows", "tablet", "software", "smartphone", "mp3-players"]
 
 
 @pytest.mark.parametrize("catalog_id", CATALOG_IDS)
@@ -61,7 +62,9 @@ def test_switch_products_view(catalog_id, browser, base_url):
         ), f"All products are NOT shown in list (after switching to the 'list' view)"
 
 
-@pytest.mark.parametrize("product_index", range(2))  # test first 2 products in each category
+@pytest.mark.parametrize("product_index", [
+    pytest.param(1, marks=pytest.mark.smoke),
+    2, 3])
 @pytest.mark.parametrize("catalog_id", CATALOG_IDS)
 def test_add_product_to_cart_should_be_success_message_and_increase_cart_total(catalog_id, product_index, browser, base_url):
     catalog_page = CatalogPage(catalog_id, browser=browser, base_url=base_url)

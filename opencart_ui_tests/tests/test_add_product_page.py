@@ -8,6 +8,7 @@ logging.config.dictConfig(logger_config)
 LOGGER = logging.getLogger("file_logger")
 
 
+@pytest.mark.smoke
 def test_click_add_new_product_should_open_this_page(browser, base_url, go_to_add_new_product_page):
     """Should be "Save" button on the "Add new product" page"""
     add_page = go_to_add_new_product_page
@@ -25,6 +26,7 @@ def test_add_new_product_page_contains_all_tabs(browser, base_url, go_to_add_new
         assert add_page.get_element_if_present(locator), \
             f"Unable to locate '{tab_name}' tab on the 'Add new product' page."
 
+
 def test_general_tab_contains_all_fields(browser, base_url, go_to_add_new_product_page):
     """Check all fields are present on the "General" tab"""
     add_page = go_to_add_new_product_page
@@ -35,6 +37,7 @@ def test_general_tab_contains_all_fields(browser, base_url, go_to_add_new_produc
             f"Unable to locate '{field_name}' field on the 'General' tab."
 
 
+@pytest.mark.smoke
 @pytest.mark.xfail(reason="Fails in headless mode (only)")
 def test_can_add_new_product_filling_only_required_fields(browser, base_url, go_to_add_new_product_page):
     """Create product filling only required fields: name, meta, model"""

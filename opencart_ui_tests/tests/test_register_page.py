@@ -8,6 +8,7 @@ logging.config.dictConfig(logger_config)
 LOGGER = logging.getLogger("file_logger")
 
 
+@pytest.mark.smoke
 def test_registration(browser, base_url):
     register_page = RegisterPage(browser, base_url)
     register_page.open()
@@ -48,6 +49,7 @@ def test_cannot_register_if_do_not_agree_to_policy(browser, base_url):
         f"Expected to get error message: '{register_page.ERROR_TEXT_POLICY}', but got '{error_banner_text}'"
 
 
+@pytest.mark.smoke
 @pytest.mark.parametrize("user_data_item", EXAMPLE_USER.keys())
 def test_cannot_register_if_any_of_mandatory_fields_is_empty(user_data_item, browser, base_url):
     register_page = RegisterPage(browser, base_url)

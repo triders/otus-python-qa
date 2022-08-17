@@ -8,14 +8,12 @@ logging.config.dictConfig(logger_config)
 LOGGER = logging.getLogger("file_logger")
 
 PRODUCT_IDS = [
-    "iphone",
-    # "iphone", "imac", "test", "canon-eos-5d", "nikon-d300", "samsung-syncmaster-941bw"
-]
+    pytest.param("iphone", marks=pytest.mark.smoke),
+    "imac", "nikon-d300", "samsung-syncmaster-941bw",
+    "test", "canon-eos-5d"]
 XFAIL_PRODUCT_IDS_FOR_test_product_name_the_same_as_tab_name = [
-    "iphone", "imac",
     pytest.param("test", marks=pytest.mark.xfail(strict=True)),
-    pytest.param("canon-eos-5d", marks=pytest.mark.xfail(strict=True)),
-    "nikon-d300", "samsung-syncmaster-941bw"]
+    pytest.param("canon-eos-5d", marks=pytest.mark.xfail(strict=True))]
 
 
 @pytest.mark.parametrize("product_id", PRODUCT_IDS)

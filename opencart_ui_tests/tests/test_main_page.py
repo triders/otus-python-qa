@@ -38,6 +38,7 @@ def test_change_currency(currency, browser, base_url):
         f"Expected currency to be '{main_page.CURRENCY_SIGNS[currency.upper()]}', but got '{current_currency}'"
 
 
+@pytest.mark.smoke
 def test_nav_bar_on_main_page_exists(browser, base_url):
     main_page = MainPage(browser=browser, base_url=base_url)
     main_page.open()
@@ -64,7 +65,9 @@ def test_cart_is_empty_on_first_launch(browser, base_url):
         f"Should be no items in cart, but got {items_in_cart} items, total price is ${total_price}"
 
 
-@pytest.mark.parametrize("product_index", range(1, 3))
+@pytest.mark.parametrize("product_index", [
+    pytest.param(1, marks=pytest.mark.smoke),
+    2, 3])
 def test_add_featured_product_to_cart_should_be_success_message(product_index, browser, base_url):
     main_page = MainPage(browser=browser, base_url=base_url)
     main_page.open()

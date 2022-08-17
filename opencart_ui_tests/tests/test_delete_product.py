@@ -1,3 +1,4 @@
+import pytest
 import logging.config
 
 from opencart_ui_tests.pages.admin_products_page import AdminProductsPage
@@ -7,6 +8,7 @@ logging.config.dictConfig(logger_config)
 LOGGER = logging.getLogger("file_logger")
 
 
+@pytest.mark.smoke
 def test_add_new_product_and_delete(browser, base_url, go_to_add_new_product_page):
     """Create product filling only required fields: name, meta, model"""
     add_new_product_page = go_to_add_new_product_page

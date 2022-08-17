@@ -10,7 +10,8 @@ pytest --browser_name=chrome --bv=102.0 --base_url=http://192.168.1.1:8081 --use
 ```
 
 1. `pytest` arguments
-   1. `--base_url=http://192.168.1.1:8081` URL to running opencart (How-to setup in p.3 below)
+   1. `-m=smoke` run only smoke tests
+   2. `--base_url=http://192.168.1.1:8081` URL to running opencart (How-to setup in p.3 below)
    2. `--username=SOME_USERNAME --password=SOME_PASSWORD` Get [Opencart ADMIN creds from here](https://gist.github.com/konflic/ecd93a4bf7666d97d62bcecbe2713e55)
    3. `--browser_name=chrome` select browser name
    4. `--executor`
@@ -20,6 +21,7 @@ pytest --browser_name=chrome --bv=102.0 --base_url=http://192.168.1.1:8081 --use
          2. `--bv` select browser version
          3. `--videos` save UI of tests execution to files 
    5. `--screenshot=on --screenshot_path=on` will save screenshots on failure
+   6. `-n=4` run tests in parallel, e.g. 4 threads
 2. Selenoid setup
    1. Prepare Selenoid via [Configuration Manager](https://aerokube.com/cm/latest/):
    2. `./cm selenoid start --vnc`

@@ -1,3 +1,4 @@
+import pytest
 from opencart_ui_tests.pages.admin_login_page import AdminLoginPage
 import logging.config
 
@@ -7,6 +8,7 @@ logging.config.dictConfig(logger_config)
 LOGGER = logging.getLogger("file_logger")
 
 
+@pytest.mark.smoke
 def test_login(user, browser, base_url):
     login_page = AdminLoginPage(browser, base_url)
     login_page.open()
@@ -30,6 +32,7 @@ def test_page_title(browser, base_url):
         f"Expected page title to be '{login_page.PAGE_TITLE}', but got '{page_title_text}'"
 
 
+@pytest.mark.smoke
 def test_click_forgotten_password_should_redirect_to_this_page(browser, base_url):
     login_page = AdminLoginPage(browser, base_url)
     login_page.open()
