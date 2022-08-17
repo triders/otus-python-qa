@@ -1,9 +1,9 @@
 import time
 import pytest
-from opencart_ui_tests.pages.catalog_page import CatalogPage
-from opencart_ui_tests.pages.product_page import ProductPage
 import logging.config
 
+from opencart_ui_tests.pages.catalog_page import CatalogPage
+from opencart_ui_tests.pages.product_page import ProductPage
 from opencart_ui_tests.logging_settings import logger_config
 
 logging.config.dictConfig(logger_config)
@@ -63,7 +63,7 @@ def test_switch_products_view(catalog_id, browser, base_url):
 
 @pytest.mark.parametrize("product_index", range(2))  # test first 2 products in each category
 @pytest.mark.parametrize("catalog_id", CATALOG_IDS)
-def test_add_product_to_cart_should_be_success_message(catalog_id, product_index, browser, base_url):
+def test_add_product_to_cart_should_be_success_message_and_increase_cart_total(catalog_id, product_index, browser, base_url):
     catalog_page = CatalogPage(catalog_id, browser=browser, base_url=base_url)
     catalog_page.open()
     if catalog_page.wait_element(catalog_page.LOCATORS["products on page"]):
@@ -74,7 +74,7 @@ def test_add_product_to_cart_should_be_success_message(catalog_id, product_index
             catalog_page.add_to_cart(product_index)
             time.sleep(1)  # url may change, we wait for it
             if browser.current_url != catalog_page.url:
-                # if product has required fields it cannot be added from main - redirect to product page occurs.
+                # if product has required fields it cannot be added from Catalog - redirect to product page occurs.
                 # We check that the product actually has at least 1 required field here
                 LOGGER.debug("User is redirected to the product page. Seems that this product has required fields...")
                 catalog_page.scroll_to_element(ProductPage.LOCATORS["add to cart required fields"])
@@ -84,7 +84,7 @@ def test_add_product_to_cart_should_be_success_message(catalog_id, product_index
                     f"Product '{browser.current_url}' doesn't have any required field. " \
                     f"So it should have been added to cart from main page (but wasn't)"
             else:
-                # other products can be added from main page, should be success message
+                # other products can be added from Catalog page, should be success message
                 catalog_page.wait_element(
                     catalog_page.LOCATORS["alert"])  # page automatically scrolls to top, but it takes some time
                 success_message = catalog_page.get_element_if_present(catalog_page.LOCATORS["alert"], only_first=True)
