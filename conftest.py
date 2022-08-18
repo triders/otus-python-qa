@@ -9,7 +9,7 @@ from webdriver_manager.opera import OperaDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
 import logging.config
-from logging_settings import logger_config
+from opencart_ui_tests.logging_settings import logger_config
 
 logging.config.dictConfig(logger_config)
 LOGGER_START = logging.getLogger("file_logger_start")
@@ -17,8 +17,7 @@ LOGGER_ENV = logging.getLogger("file_logger_env")
 
 
 def pytest_addoption(parser):
-    parser.addoption('--base_url', action='store', default="http://localhost",
-                     help="Opencart base url")
+    parser.addoption('--base_url', action='store', help="Opencart base url")
     parser.addoption('--browser_name', action='store', default="chrome",
                      help="Browser to run tests. Default is 'chrome'. "
                           "Also available: 'safari', 'firefox', 'opera', 'yandex', 'edge'")

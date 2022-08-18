@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from opencart_ui_tests.pages.base_page import BasePage
 
 import logging.config
-from logging_settings import logger_config
+from opencart_ui_tests.logging_settings import logger_config
 
 logging.config.dictConfig(logger_config)
 LOGGER = logging.getLogger("file_logger")

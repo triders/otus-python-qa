@@ -5,29 +5,23 @@
 Example command:
 
 ```
-pytest --browser_name=chrome --bv=102.0 --base_url=http://192.168.1.1:8081 --username=admin --password=secure123 --executor=192.168.2.2 --vnc page_objects_and_tests_for_opencart 
+pytest --browser_name=chrome --bv=102.0 --base_url=http://192.168.1.1:8081 --username=admin --password=secure123 --executor=192.168.1.1 --vnc page_objects_and_tests_for_opencart --screenshot=on --screenshot_path=on
+
 ```
 
-0. Preparation
-   1. Get opencart `ADMIN` creds from here https://gist.github.com/konflic/ecd93a4bf7666d97d62bcecbe2713e55)
-
-      1. pass creads as args `--username='SOME_USERNAME''` `--password='SOME_PASSWORD''` in command line when run tests
-         via `pytest`
-      2. OR create `auth.py` in the `/page_objects_and_tests_for_opencart/` directory with the following structure:
-      ```
-      class Users:
-       ADMIN = {"username": "SOME_USERNAME", "password": "SOME_PASSWORD"}
-      ```
-
 1. `pytest` arguments
-   1. `--base_url=http://192.168.1.1:8081` URL to running opencart (How-to setup in p.3 below)
-   2. `--browser_name=chrome` select browser name
-   3. `--executor`
+   1. `-m=smoke` run only smoke tests
+   2. `--base_url=http://192.168.1.1:8081` URL to running opencart (How-to setup in p.3 below)
+   2. `--username=SOME_USERNAME --password=SOME_PASSWORD` Get [Opencart ADMIN creds from here](https://gist.github.com/konflic/ecd93a4bf7666d97d62bcecbe2713e55)
+   3. `--browser_name=chrome` select browser name
+   4. `--executor`
       1. `--executor=local` to run locally
       2. `--executor={REMOTE_EXECUTOR_IP}` to run via Selenoid, arguments:
          1. `--vnc` capture [UI of tests execution](https://aerokube.com/selenoid-ui/latest/)
          2. `--bv` select browser version
          3. `--videos` save UI of tests execution to files 
+   5. `--screenshot=on --screenshot_path=on` will save screenshots on failure
+   6. `-n=4` run tests in parallel, e.g. 4 threads
 2. Selenoid setup
    1. Prepare Selenoid via [Configuration Manager](https://aerokube.com/cm/latest/):
    2. `./cm selenoid start --vnc`
