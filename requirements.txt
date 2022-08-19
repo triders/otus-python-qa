@@ -7,4 +7,4 @@ Faker ~= 13.11.0
 allure-pytest ~= 2.9.45
 pytest-xdist ~= 2.5.0
 paramiko ~= 2.11.0
-pytest-failed-screenshot ~= 1.0.2
+#pytest-failed-screenshot ~= 1.0.2
