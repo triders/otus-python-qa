@@ -29,7 +29,7 @@ class AdminProductsPage(BasePage):
         self.click(self.LOCATORS["add new"])
         LOGGER.debug("Clicked on 'Add new product'")
 
-    @allure.step("Finding the product with name: '{name}' and returning it")
+    @allure.step("Finding product with name: '{name}'")
     def get_product_by_name(self, name):
         self.scroll_to_element((By.XPATH, "//*[contains(text(), '{0}')]".format(name)))
         product = self.get_element_if_present((By.XPATH, "//*[contains(text(), '{0}')]".format(name)))
@@ -49,12 +49,12 @@ class AdminProductsPage(BasePage):
         self.click(self.LOCATORS["filter"])
         return self
 
-    @allure.step("Counting the products on the Products page list")
+    @allure.step("Counting products in list on 'Products page'")
     def get_products_number_on_page(self):
         """Generally used to understand how many products left after filter is applied"""
         products = self.get_element_if_present(self.LOCATORS["products on page"])
         products_number = len(products) - 1  # because first item is the "Select all" checkbox
-        LOGGER.debug(f"Found {products_number} products on page")
+        LOGGER.debug(f"Found {products_number} products in list")
         return products_number
 
     def filter_and_select_the_exact_product(self, name=None, model=None):
@@ -65,9 +65,9 @@ class AdminProductsPage(BasePage):
         self.click(select_all_checkbox)
         LOGGER.debug(f"Checked that there is only one product left after filtering, and then -- selected it")
 
-    @allure.step("Deleting the selected product")
+    @allure.step("Deleting selected product")
     def delete_selected_products(self):
         self.click(self.LOCATORS["delete"])
         delete_alert = self.browser.switch_to.alert
         delete_alert.accept()
-        LOGGER.debug("Deleted the selected product")
+        LOGGER.debug("Deleted selected product")

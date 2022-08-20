@@ -11,6 +11,7 @@ LOGGER = logging.getLogger("file_logger")
 
 
 def test_logo_on_main_page_exists(browser, base_url):
+    """Check there is OpenCart logo on 'Main page'"""
     main_page = MainPage(browser=browser, base_url=base_url)
     main_page.open()
     LOGGER.debug(f"ASSERT: there is opencart logo on main page")
@@ -19,6 +20,7 @@ def test_logo_on_main_page_exists(browser, base_url):
 
 
 def test_usd_should_be_default_currency(browser, base_url):
+    """Check that USD ($) is default currency"""
     main_page = MainPage(browser=browser, base_url=base_url)
     main_page.open()
     current_currency = main_page.get_current_currency()
@@ -29,6 +31,7 @@ def test_usd_should_be_default_currency(browser, base_url):
 
 @pytest.mark.parametrize("currency", ["USD", "EUR", "GBP"])
 def test_change_currency(currency, browser, base_url):
+    """Check that currency can be changed"""
     main_page = MainPage(browser=browser, base_url=base_url)
     main_page.open()
     main_page.change_currency_to(currency=currency)
@@ -40,6 +43,7 @@ def test_change_currency(currency, browser, base_url):
 
 @pytest.mark.smoke
 def test_nav_bar_on_main_page_exists(browser, base_url):
+    """Check that there is navigation bar on the Main page"""
     main_page = MainPage(browser=browser, base_url=base_url)
     main_page.open()
     LOGGER.debug(f"ASSERT: there is navigation bar on the Main page")
@@ -48,6 +52,7 @@ def test_nav_bar_on_main_page_exists(browser, base_url):
 
 
 def test_nav_bar_items_clickable(browser, base_url):
+    """Check that navigation bar items are clickable"""
     main_page = MainPage(browser=browser, base_url=base_url)
     main_page.open()
     nav_bar_items = main_page.get_element_if_present(main_page.BASE_PAGE_LOCATORS["navbar items"])
@@ -57,6 +62,7 @@ def test_nav_bar_items_clickable(browser, base_url):
 
 
 def test_cart_is_empty_on_first_launch(browser, base_url):
+    """Check that cart is empty when a user opens Opencart for the first time"""
     main_page = MainPage(browser=browser, base_url=base_url)
     main_page.open()
     items_in_cart, total_price = main_page.get_cart_item_count_and_total_price()
@@ -68,7 +74,11 @@ def test_cart_is_empty_on_first_launch(browser, base_url):
 @pytest.mark.parametrize("product_index", [
     pytest.param(1, marks=pytest.mark.smoke),
     2, 3])
-def test_add_featured_product_to_cart_should_be_success_message(product_index, browser, base_url):
+def test_add_featured_product_to_cart_should_be_success_message_and_increase_cart_total(product_index, browser, base_url):
+    """Check
+        1. after adding product to cart, 'total items' == 1, 'cart price' > 0.
+        2. if product has NO required fields, it can be added to cart from 'Main page' right away!
+        3. if product has required fields, user gets redirected to product page"""
     main_page = MainPage(browser=browser, base_url=base_url)
     main_page.open()
     main_page.scroll_to_element(main_page.LOCATORS["featured: add to cart buttons"])

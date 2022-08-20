@@ -20,10 +20,10 @@ class MainPage(BasePage):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    @allure.step("Adding to cart the featured product #{index} (from left to right)")
+    @allure.step("Adding #{index} 'featured product' to cart (by index, in order from left to right)")
     def add_to_cart(self, index=1):
-        """Add n-th featured product to cart. Index = 1 (first item) by default"""
+        """Add n-th featured product to cart"""
         add_to_cart_button = self.get_element_if_present(
             locator=self.LOCATORS["featured: add to cart buttons"])
         self.click(add_to_cart_button[index - 1])
-        LOGGER.debug(f"Added to cart the featured product #{index} (from left to right)")
+        LOGGER.debug(f"Added #{index} 'featured product' to cart (by index, in order from left to right)")

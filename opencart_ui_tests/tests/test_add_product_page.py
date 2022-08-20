@@ -64,6 +64,7 @@ def test_cannot_add_new_product_with_empty_required_field(fields, browser, base_
 
 
 def test_page_title(browser, base_url, go_to_add_new_product_page):
+    """Page title should be 'Add Product'"""
     add_page = go_to_add_new_product_page
     page_title = add_page.get_element_text(add_page.LOCATORS["page title"])
     LOGGER.debug(f"ASSERT: Page title to be '{add_page.PAGE_TITLE}'")

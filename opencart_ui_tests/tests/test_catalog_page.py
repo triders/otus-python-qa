@@ -15,6 +15,7 @@ CATALOG_IDS = [
 
 @pytest.mark.parametrize("catalog_id", CATALOG_IDS)
 def test_catalog_name_the_same_as_tab_name(catalog_id, browser, base_url):
+    """Check that Catalog name is the same as browser tab (window) name"""
     catalog_page = CatalogPage(catalog_id=catalog_id, browser=browser, base_url=base_url)
     catalog_page.open()
     tab_name = catalog_page.get_tab_name()
@@ -26,6 +27,7 @@ def test_catalog_name_the_same_as_tab_name(catalog_id, browser, base_url):
 
 @pytest.mark.parametrize("catalog_id", CATALOG_IDS)
 def test_if_no_products_in_category_should_be_corresponding_message(catalog_id, browser, base_url):
+    f"""Check that if no products in Catalog there is a message '{CatalogPage.NO_PRODUCTS_MESSAGE}'"""
     catalog_page = CatalogPage(catalog_id=catalog_id, browser=browser, base_url=base_url)
     catalog_page.open()
     if not catalog_page.wait_element(catalog_page.LOCATORS["products on page"]):
@@ -42,6 +44,9 @@ def test_if_no_products_in_category_should_be_corresponding_message(catalog_id, 
 
 @pytest.mark.parametrize("catalog_id", CATALOG_IDS)
 def test_switch_products_view(catalog_id, browser, base_url):
+    """Check that
+        1. all products are shown in grid by default
+        2. after switching to 'list' view -- shown in list"""
     catalog_page = CatalogPage(catalog_id=catalog_id, browser=browser, base_url=base_url)
     catalog_page.open()
     if catalog_page.wait_element(catalog_page.LOCATORS["products on page"]):
@@ -67,6 +72,10 @@ def test_switch_products_view(catalog_id, browser, base_url):
     2, 3])
 @pytest.mark.parametrize("catalog_id", CATALOG_IDS)
 def test_add_product_to_cart_should_be_success_message_and_increase_cart_total(catalog_id, product_index, browser, base_url):
+    """Check
+        1. after adding product to cart, 'total items' == 1, 'cart price' > 0.
+        2. if product has NO required fields, it can be added to cart from 'Catalog page' right away!
+        3. if product has required fields, user gets redirected to product page"""
     catalog_page = CatalogPage(catalog_id, browser=browser, base_url=base_url)
     catalog_page.open()
     if catalog_page.wait_element(catalog_page.LOCATORS["products on page"]):

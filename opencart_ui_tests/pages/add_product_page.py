@@ -43,13 +43,13 @@ class AddNewProductPage(BasePage):
     PAGE_TITLE = "Add Product"
     CREATE_NEW_PRODUCT_ERROR_TEXT = " Warning: Please check the form carefully for errors!"
 
-    @allure.step("Switching to tab '{name}' at the 'Add new product' page configuration")
+    @allure.step("Switching to section '{name}' in 'Add new product' page configuration")
     def switch_to_tab(self, name):
         self.scroll_to_element(self.LOCATORS["tab"][name])
         self.click(self.LOCATORS["tab"][name])
-        LOGGER.debug(f"Switched to tab '{name}'")
+        LOGGER.debug(f"Switched to '{name}'")
 
-    @allure.step("Creating the product with parameters: name='{name}', model='{model}', meta='{meta}'")
+    @allure.step("Creating product: name='{name}', model='{model}', meta='{meta}'")
     def create_product(self, name=None, model=None, meta=None):
         if name is None:
             f = Faker()
@@ -59,14 +59,14 @@ class AddNewProductPage(BasePage):
         if meta is None:
             meta = "cucumber"
 
-        LOGGER.debug(f"Creating a product with parameters: name='{name}', model='{model}', meta='{meta}")
+        LOGGER.debug(f"Creating product: name='{name}', model='{model}', meta='{meta}")
         self.fill_field(self.LOCATORS["general"]["name"], name)
         self.fill_field(self.LOCATORS["general"]["meta"], meta)
         self.switch_to_tab("data")
         self.fill_field(self.LOCATORS["data"]["model"], model)
 
         self.click(self.LOCATORS["save"])
-        LOGGER.debug(f"Created the product")
+        LOGGER.debug(f"Created product")
 
         created_product = {"name": name, "model": model, "meta": meta}
         return created_product
