@@ -14,8 +14,8 @@ services:
     image: docker.io/bitnami/mariadb:10.3
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
-      - MARIADB_USER=bn_opencart
-      - MARIADB_DATABASE=bitnami_opencart
+      - MARIADB_USER=user
+      - MARIADB_DATABASE=bitnami
     volumes:
       - 'mariadb_data:/bitnami/mariadb'
     ports:
@@ -31,8 +31,8 @@ services:
       - OPENCART_HOST=192.168.31.8:8081
       - OPENCART_DATABASE_HOST=mariadb
       - OPENCART_DATABASE_PORT_NUMBER=3306
-      - OPENCART_DATABASE_USER=bn_opencart
-      - OPENCART_DATABASE_NAME=bitnami_opencart
+      - OPENCART_DATABASE_USER=user
+      - OPENCART_DATABASE_NAME=bitnami
       - ALLOW_EMPTY_PASSWORD=yes
     volumes:
       - 'opencart_data:/bitnami/opencart'
