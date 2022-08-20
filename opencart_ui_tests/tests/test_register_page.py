@@ -10,6 +10,7 @@ LOGGER = logging.getLogger("file_logger")
 
 @pytest.mark.smoke
 def test_registration(browser, base_url):
+    """Test simple valid registration flow"""
     register_page = RegisterPage(browser, base_url)
     register_page.open()
     register_page.wait_element(register_page.LOCATORS["first name"])
@@ -24,6 +25,7 @@ def test_registration(browser, base_url):
 
 
 def test_should_be_link_to_login_page(browser, base_url):
+    """Check that user can go to 'login' page from 'register' (there should be link)"""
     register_page = RegisterPage(browser, base_url)
     register_page.open()
     login_link = register_page.wait_element(register_page.LOCATORS["login link"])
@@ -34,6 +36,7 @@ def test_should_be_link_to_login_page(browser, base_url):
 
 
 def test_cannot_register_if_do_not_agree_to_policy(browser, base_url):
+    """Check that user cannot register if he doesn't enable 'Agree to policy' checkbox"""
     register_page = RegisterPage(browser, base_url)
     register_page.open()
     register_page.wait_element(register_page.LOCATORS["first name"])
@@ -52,6 +55,7 @@ def test_cannot_register_if_do_not_agree_to_policy(browser, base_url):
 @pytest.mark.smoke
 @pytest.mark.parametrize("user_data_item", EXAMPLE_USER.keys())
 def test_cannot_register_if_any_of_mandatory_fields_is_empty(user_data_item, browser, base_url):
+    """"Check that user cannot register if he doesn't fill all required fields; user remains on 'register page'"""
     register_page = RegisterPage(browser, base_url)
     register_page.open()
     register_page.wait_element(register_page.LOCATORS["first name"])
@@ -67,6 +71,7 @@ def test_cannot_register_if_any_of_mandatory_fields_is_empty(user_data_item, bro
 
 
 def test_cannot_register_if_password_and_password_confirmation_do_not_match(browser, base_url):
+    """Check that user cannot register if password confirmation fails"""
     register_page = RegisterPage(browser, base_url)
     register_page.open()
     register_page.wait_element(register_page.LOCATORS["first name"])

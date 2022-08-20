@@ -31,11 +31,11 @@ class CatalogPage(BasePage):
         super().__init__(*args, **kwargs)
         self.url += catalog_id
 
-    @allure.step("Adding #{index} product to cart (by index in order from left to right)")
-    def add_to_cart(self, index=0):
-        """Add n-th featured product to cart. Adding first item by default"""
+    @allure.step("Adding #{index} product to cart from catalog (by index, in order from left to right)")
+    def add_to_cart(self, index=1):
+        """Add n-th product to cart. Adding first item by default"""
         LOGGER.debug(f"Adding #{index} product to cart (by index in order from left to right)")
         add_to_cart_button = self.get_element_if_present(
             locator=self.LOCATORS["add to cart buttons"])
-        self.click(add_to_cart_button[index])
+        self.click(add_to_cart_button[index-1])
         LOGGER.debug(f"Added #{index} product to cart")

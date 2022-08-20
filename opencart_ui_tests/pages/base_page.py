@@ -47,36 +47,36 @@ class BasePage:
             self.browser.get(self.url)
             LOGGER.debug(f"Opened page: {self.url}")
 
-    @allure.step("Trying to find element(s): {locator}")
+    @allure.step("Searching: {locator}")
     def get_element_if_present(self, locator, only_first=False):
         """Returns the element or elements list if found"""
         elements_list = self.browser.find_elements(*locator)
         if only_first:
-            LOGGER.debug(f"Found, and returning only first element: '{locator}' ")
+            LOGGER.debug(f"Found! Returning only first element: '{locator}' ")
             return elements_list[0]
         else:
-            LOGGER.debug(f"Found, and returning elements: '{locator}' ")
+            LOGGER.debug(f"Found! Returning elements list: '{locator}' ")
             return elements_list
 
-    @allure.step("Clicking on element: {element_or_locator}")
+    @allure.step("Clicking on: {element_or_locator}")
     def click(self, element_or_locator):
         if isinstance(element_or_locator, WebElement):
             element_or_locator.click()
         else:
             self.get_element_if_present(element_or_locator, only_first=True).click()
-        LOGGER.debug(f"Clicked on element: '{element_or_locator}' ")
+        LOGGER.debug(f"Clicked on: '{element_or_locator}' ")
 
-    @allure.step("Filling the field: {locator}, with text: '{text}'")
+    @allure.step("Writing text '{text}' into field '{locator}'")
     def fill_field(self, locator, text):
         self.wait_element(locator).send_keys(text)
-        LOGGER.debug(f"Filled the field: {locator}, with text: '{text}'")
+        LOGGER.debug(f"Writen text '{text}' into field '{locator}'")
 
-    @allure.step("Emptying the field: {locator}")
+    @allure.step("Clearing the field: {locator}")
     def clear_field(self, locator):
         self.wait_element(locator).clear()
         LOGGER.debug(f"Cleared the field: {locator}")
 
-    @allure.step("Scrolling to element: {element_or_locator}")
+    @allure.step("Scrolling to: {element_or_locator}")
     def scroll_to_element(self, element_or_locator):
         try:
             if isinstance(element_or_locator, WebElement):
@@ -85,57 +85,57 @@ class BasePage:
                 # we expect 'element_or_locator' to be a locator
                 self.browser.execute_script("arguments[0].scrollIntoView();",
                                             self.browser.find_element(*element_or_locator))
-            LOGGER.debug(f"Scrolled to element: '{element_or_locator}'")
+            LOGGER.debug(f"Scrolled, now element is visible: '{element_or_locator}'")
         except NoSuchElementException:
             LOGGER.warning(f"Tried to scroll to element, but didn't find it: '{element_or_locator}' ")
             return False
 
-    @allure.step("Waiting element to be present: {locator} for {timeout} seconds. Returning it if found")
+    @allure.step("Waiting element present: '{locator}' to be present for {timeout} seconds")
     def wait_element(self, locator, timeout=TIMEOUT):
         try:
-            LOGGER.debug(f"Waiting element to be present: {locator} for {timeout} seconds")
+            LOGGER.debug(f"Waiting element present: '{locator}' for {timeout} seconds")
             return WebDriverWait(self.browser, timeout).until(ec.visibility_of_element_located(locator))
         except TimeoutException:
-            LOGGER.warning(f"Failed to find element: {locator}; waited for {timeout} seconds")
+            LOGGER.warning(f"Unable to find element: '{locator}'; waited for {timeout} seconds")
             return False
 
-    @allure.step("Waiting element NOT to be present: {locator} for {timeout} seconds")
+    @allure.step("Waiting element NOT present: '{locator}' for {timeout} seconds")
     def wait_element_not_present(self, locator, timeout=TIMEOUT):
         try:
-            LOGGER.debug(f"Waiting element NOT to be present: {locator} for {timeout} seconds")
+            LOGGER.debug(f"Waiting element NOT present: '{locator}' for {timeout} seconds")
             return WebDriverWait(self.browser, timeout).until_not(ec.visibility_of_element_located(locator))
         except TimeoutException:
-            LOGGER.warning(f"Didn't expect to find element: {locator}; waited for {timeout} seconds ")
+            LOGGER.warning(f"Didn't expect to find element: '{locator}'; waited for {timeout} seconds ")
             return False
 
-    @allure.step("Waiting element to be clickable: {locator} for {timeout} seconds. Returning it if found")
+    @allure.step("Waiting element clickable: '{locator}' for {timeout} seconds")
     def wait_element_clickable(self, locator, timeout=TIMEOUT):
         try:
-            LOGGER.debug(f"Waiting element to be clickable: {locator} for {timeout} seconds")
+            LOGGER.debug(f"Waiting element clickable: '{locator}' for {timeout} seconds")
             return WebDriverWait(self.browser, timeout).until(ec.element_to_be_clickable(locator))
         except TimeoutException:
-            LOGGER.warning(f"Failed to find CLICKABLE element: {locator}; waited for {timeout} seconds")
+            LOGGER.warning(f"Failed to find CLICKABLE element: '{locator}'; waited for {timeout} seconds")
             return False
 
-    @allure.step("Waiting alert to be present for {timeout} seconds. Returning it if found")
+    @allure.step("Waiting alert present for {timeout} seconds")
     def wait_alert(self, timeout=TIMEOUT):
         try:
-            LOGGER.debug(f"Waiting alert to be present for {timeout} seconds")
+            LOGGER.debug(f"Waiting alert present for {timeout} seconds")
             return WebDriverWait(self.browser, timeout).until(ec.alert_is_present())
         except TimeoutException:
-            LOGGER.warning(f"Didn't find alert; waited for {timeout} seconds")
+            LOGGER.warning(f"Didn't find any alert; waited for {timeout} seconds")
             return False
 
-    @allure.step("Extracting the text from element: {element_or_locator}")
+    @allure.step("Extracting text from element: '{element_or_locator}'")
     def get_element_text(self, element_or_locator):
         if isinstance(element_or_locator, WebElement):
             element_text = element_or_locator.text
         else:
             element_text = self.get_element_if_present(element_or_locator, only_first=True).text
-        LOGGER.debug(f"Extracted the text '{element_text}' from the element: {element_or_locator}")
+        LOGGER.debug(f"Extracted text '{element_text}' from element: {element_or_locator}")
         return element_text
 
-    @allure.step("Getting the current tab name")
+    @allure.step("Getting current tab name")
     def get_tab_name(self):
         LOGGER.debug(f"Current tab name is '{self.browser.title}'")
         return self.browser.title
@@ -153,15 +153,15 @@ class BasePage:
         LOGGER.debug(f"Currency dropdown is {'' if currency_dropdown_state else 'NOT'} opened")
         return currency_dropdown_state
 
-    @allure.step("Changing currency to {currency}")
+    @allure.step("Changing currency to '{currency}'")
     def change_currency_to(self, currency):
         """Change opencart currency to 'USD', 'EUR' or 'GBP'"""
         if not self.is_currency_dropdown_opened():
             self.click(self.BASE_PAGE_LOCATORS["currency"]["dropdown"])
         self.click(self.BASE_PAGE_LOCATORS["currency"][currency.upper()])
-        LOGGER.debug(f"Changed currency to {currency}")
+        LOGGER.debug(f"Changed currency to '{currency}'")
 
-    @allure.step("Getting total items count and price from cart")
+    @allure.step("Getting cart total items and total price")
     def get_cart_item_count_and_total_price(self):
         """Get items number and total cart price from the cart button text (on the top-right)"""
         cart_text = self.get_element_text(BasePage.BASE_PAGE_LOCATORS["cart button"]).replace(",", "").strip()  # "2 item(s) - $1,724.00"

@@ -10,7 +10,7 @@ LOGGER = logging.getLogger("file_logger")
 
 @pytest.mark.smoke
 def test_add_new_product_and_delete(browser, base_url, go_to_add_new_product_page):
-    """Create product filling only required fields: name, meta, model"""
+    """Can create product filling only required fields: name, meta, model"""
     add_new_product_page = go_to_add_new_product_page
     created_product = add_new_product_page.create_product()
     products_page = AdminProductsPage(browser, base_url)
@@ -25,7 +25,7 @@ def test_add_new_product_and_delete(browser, base_url, go_to_add_new_product_pag
 
 
 def test_should_be_alert_on_delete_action(browser, base_url, go_to_add_new_product_page):
-    """Create product filling only required fields: name, meta, model"""
+    """Check there is browser alert, after clicking the 'Delete' button"""
     add_new_product_page = go_to_add_new_product_page
     created_product = add_new_product_page.create_product()
     products_page = AdminProductsPage(browser, base_url)
@@ -38,6 +38,7 @@ def test_should_be_alert_on_delete_action(browser, base_url, go_to_add_new_produ
 
 
 def test_should_not_delete_product_if_dismiss_alert(browser, base_url, go_to_add_new_product_page):
+    """Check product wasn't deleted if user dismissed 'Delete product?' alert"""
     add_new_product_page = go_to_add_new_product_page
     created_product = add_new_product_page.create_product()
     products_page = AdminProductsPage(browser, base_url)

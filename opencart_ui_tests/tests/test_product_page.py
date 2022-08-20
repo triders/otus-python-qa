@@ -18,6 +18,7 @@ XFAIL_PRODUCT_IDS_FOR_test_product_name_the_same_as_tab_name = [
 
 @pytest.mark.parametrize("product_id", PRODUCT_IDS)
 def test_product_name_is_not_empty(product_id, browser, base_url):
+    """Check that product name is not empty"""
     product_page = ProductPage(product_id=product_id, browser=browser, base_url=base_url)
     product_page.open()
     product_name = product_page.get_element_text(product_page.LOCATORS["product name"])
@@ -27,6 +28,7 @@ def test_product_name_is_not_empty(product_id, browser, base_url):
 
 @pytest.mark.parametrize("product_id", PRODUCT_IDS)
 def test_product_price_is_greater_than_zero(product_id, browser, base_url):
+    """Check that price is greater than zero"""
     product_page = ProductPage(product_id=product_id, browser=browser, base_url=base_url)
     product_page.open()
     product_price = product_page.get_product_price(currency="$")
@@ -37,6 +39,7 @@ def test_product_price_is_greater_than_zero(product_id, browser, base_url):
 
 @pytest.mark.parametrize("product_id", PRODUCT_IDS)
 def test_product_has_main_image(product_id, browser, base_url):
+    """Check that product has at least one (main) image"""
     product_page = ProductPage(product_id=product_id, browser=browser, base_url=base_url)
     product_page.open()
     LOGGER.debug(f"ASSERT: Product '{product_page.get_tab_name()}' has main image")
@@ -46,6 +49,7 @@ def test_product_has_main_image(product_id, browser, base_url):
 
 @pytest.mark.parametrize("product_id", XFAIL_PRODUCT_IDS_FOR_test_product_name_the_same_as_tab_name)
 def test_product_name_the_same_as_tab_name(product_id, browser, base_url):
+    """Check that product name is the same as browser tab (window) name"""
     product_page = ProductPage(product_id=product_id, browser=browser, base_url=base_url)
     product_page.open()
     tab_name = product_page.get_tab_name()
@@ -57,6 +61,7 @@ def test_product_name_the_same_as_tab_name(product_id, browser, base_url):
 
 @pytest.mark.parametrize("product_id", PRODUCT_IDS)
 def test_product_name_the_same_in_title_and_breadcrumb_navigation(product_id, browser, base_url):
+    """Check that product name is the same as in the breadcrumb navigation"""
     product_page = ProductPage(product_id=product_id, browser=browser, base_url=base_url)
     product_page.open()
     product_name_title = product_page.get_element_text(

@@ -10,6 +10,7 @@ LOGGER = logging.getLogger("file_logger")
 
 @pytest.mark.smoke
 def test_login(user, browser, base_url):
+    """Check is Admin able to access 'Admin Dashboard' after logging in. You should pass valid Admin creds to test!"""
     login_page = AdminLoginPage(browser, base_url)
     login_page.open()
     login_page.wait_element(login_page.LOCATORS["username"])
@@ -22,18 +23,11 @@ def test_login(user, browser, base_url):
         f"'{base_url + login_page.LOGGED_IN_URL_APPENDIX_PART}'"
 
 
-def test_page_title(browser, base_url):
-    login_page = AdminLoginPage(browser, base_url)
-    login_page.open()
-    page_title = login_page.wait_element(login_page.LOCATORS["page title"])
-    page_title_text = login_page.get_element_text(page_title)
-    LOGGER.debug(f"ASSERT: page title is '{login_page.PAGE_TITLE}'")
-    assert login_page.PAGE_TITLE in page_title_text, \
-        f"Expected page title to be '{login_page.PAGE_TITLE}', but got '{page_title_text}'"
-
-
 @pytest.mark.smoke
 def test_click_forgotten_password_should_redirect_to_this_page(browser, base_url):
+    f"""Check that after clicking 'Forgotten Password' guest user:  
+        1. gets redirected to {base_url + AdminLoginPage.FORGOTTEN_PASSWORD_URL_APPENDIX};
+        2. 'email' field is present"""
     login_page = AdminLoginPage(browser, base_url)
     login_page.open()
     forgotten_password_button = login_page.wait_element(login_page.LOCATORS["forgotten password"])
@@ -49,6 +43,9 @@ def test_click_forgotten_password_should_redirect_to_this_page(browser, base_url
 
 
 def test_should_be_error_banner_with_message_if_non_existing_user(fake_user, browser, base_url):
+    f"""Check that when non-existing user attempts to log in:
+        1. gets error message: '{AdminLoginPage.NO_SUCH_USER_ERROR}'
+        2. can't see 'Admin Dashboard'"""
     non_existing_user = fake_user
     login_page = AdminLoginPage(browser, base_url)
     login_page.open()
@@ -68,6 +65,7 @@ def test_should_be_error_banner_with_message_if_non_existing_user(fake_user, bro
 
 
 def test_close_error_banner(fake_user, browser, base_url):
+    """Check 'failed login error banner' can be closed after clicking 'cross' icon"""
     non_existing_user = fake_user
     login_page = AdminLoginPage(browser, base_url)
     login_page.open()
@@ -79,3 +77,14 @@ def test_close_error_banner(fake_user, browser, base_url):
     LOGGER.debug(f"ASSERT: error banner has disappeared after clicking 'cross' icon")
     assert login_page.wait_element_not_present(login_page.LOCATORS["error banner"]), \
         f"Expected error banner to disappear after clicking 'cross' icon, but it is still visible"
+
+
+def test_page_title(browser, base_url):
+    f"""Check login page title is '{AdminLoginPage.PAGE_TITLE}'"""
+    login_page = AdminLoginPage(browser, base_url)
+    login_page.open()
+    page_title = login_page.wait_element(login_page.LOCATORS["page title"])
+    page_title_text = login_page.get_element_text(page_title)
+    LOGGER.debug(f"ASSERT: page title is '{login_page.PAGE_TITLE}'")
+    assert login_page.PAGE_TITLE in page_title_text, \
+        f"Expected page title to be '{login_page.PAGE_TITLE}', but got '{page_title_text}'"
