@@ -1,3 +1,4 @@
+import pytest
 import logging.config
 
 from opencart_ui_tests.pages.main_page import MainPage
@@ -7,6 +8,7 @@ logging.config.dictConfig(logger_config)
 LOGGER = logging.getLogger("file_logger")
 
 
+@pytest.mark.smoke
 def test_no_logo_on_main_page_exists(browser, base_url):
     """Check there is NO OpenCart logo on 'Main page'"""
     main_page = MainPage(browser=browser, base_url=base_url)
@@ -16,6 +18,7 @@ def test_no_logo_on_main_page_exists(browser, base_url):
         f"Unfortunately, found opencart logo on main page!"
 
 
+@pytest.mark.smoke
 def test_rub_should_be_default_currency(browser, base_url):
     """Check that 'RUB' is default currency"""
     main_page = MainPage(browser=browser, base_url=base_url)
