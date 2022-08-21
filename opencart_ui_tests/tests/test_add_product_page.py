@@ -13,7 +13,7 @@ def test_click_add_new_product_should_open_this_page(browser, base_url, go_to_ad
     """Should be "Save" button on the "Add new product" page"""
     add_page = go_to_add_new_product_page
     LOGGER.debug("ASSERT: There is the 'Save' button on the 'Add New Product' page.")
-    assert add_page.wait_element(add_page.LOCATORS["save"]), \
+    assert not add_page.wait_element(add_page.LOCATORS["save"]), \
         f"Unable to find the 'Save' button on the 'Add New Product' page."
 
 

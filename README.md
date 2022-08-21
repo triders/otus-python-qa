@@ -74,3 +74,23 @@ _Run API DDT tests via Docker_
         `GET /?status=500 HTTP/1.1\r\nHeader one: one\r\nHeader two: two\r\nContent-Type: text/html\r\n\r\n`
       - OR Type `'path:path/to/file'` to send an HTTP request from a text file (see/use the examples at ./http_requests
         folder)
+
+## _requirements: selenium + pytest-failed-screenshots issue_
+
+`pytest-failed-screenshot` package should not be in `requirements.txt` bacause it causes several issues:
+
+1. pip issue: infinite package dependency resolving
+2. ` ModuleNotFoundError: No module named 'selenium'` error in tests execution
+
+How to install requirements and make sure screenshots on failure work:
+
+```
+python3 -m venv venv
+. venv/bin/activate
+pip install pip -U
+pip install -r requirements.txt
+deactivate
+. venv/bin/activate
+pip install pytest-failed-screenshot
+pip install selenium==4.1.3
+```

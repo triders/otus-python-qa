@@ -26,7 +26,7 @@ def test_usd_should_be_default_currency(browser, base_url):
     current_currency = main_page.get_current_currency()
     LOGGER.debug(f"ASSERT: USD ($) to be default currency")
     assert current_currency == main_page.CURRENCY_SIGNS["USD"], \
-        f"Expected 'USD' ($) to be default currency, but got {current_currency}"
+        f"Expected 'USD' ($) if default currency, but got {current_currency}"
 
 
 @pytest.mark.parametrize("currency", ["USD", "EUR", "GBP"])
