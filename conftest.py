@@ -93,7 +93,7 @@ def browser(request):
         }
         options = None
         if browser_name == "opera":
-            options = Options()
+            options = webdriver.ChromeOptions()
             options.add_experimental_option('w3c', True)
 
         browser = webdriver.Remote(
