@@ -106,7 +106,7 @@ def browser(request):
 
     yield browser
 
-    browser.close()
+    browser.quit()
 
 
 @pytest.fixture(scope="function")
